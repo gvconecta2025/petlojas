@@ -23,6 +23,9 @@
         }
     </script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.8;
@@ -39,8 +42,24 @@
 </head>
 <body class="bg-gray-50 antialiased">
 
+    <!-- Barra de Navegação Fixo (One Page) -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="font-bold text-brand text-2xl tracking-tight">Pet<span class="text-orange-500">lojas</span></div>
+            <div class="hidden md:flex space-x-6 font-medium">
+                <a href="#inicio" class="text-gray-600 hover:text-brand transition">Início</a>
+                <a href="#como-funciona" class="text-gray-600 hover:text-brand transition">Como Funciona</a>
+                <a href="#planos" class="text-gray-600 hover:text-brand transition">Planos</a>
+            </div>
+            <!-- Botão Mobile Opcional (apenas visual para o layout manter-se limpo) -->
+            <div class="md:hidden text-brand font-bold">
+                Menu
+            </div>
+        </div>
+    </nav>
+
     <!-- Cabeçalho / Hero Section -->
-    <header class="bg-white border-b border-gray-200">
+    <header id="inicio" class="bg-white border-b border-gray-200 scroll-mt-20">
         <div class="max-w-4xl mx-auto px-6 py-12 text-center">
             <!-- LOGO DO CLIENTE -->
             <div class="mb-8 flex justify-center">
@@ -73,7 +92,7 @@
         </section>
 
         <!-- Tópico 2 -->
-        <section class="mb-16">
+        <section id="como-funciona" class="mb-16 scroll-mt-24">
             <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">Como a Loja Funciona na Prática</h2>
             <p>
                 O grande diferencial da nossa tecnologia é a extrema simplicidade aliada à ausência de taxas de intermediação. A sua loja terá um baixo custo de manutenção porque otimizamos todo o processo de vendas. O seu cliente navega por um catálogo onde pode cadastrar infinitos produtos e serviços, escolhe exatamente o que deseja e o pedido chega diretamente ao seu WhatsApp com uma mensagem pré-programada. Desta forma, elimina taxas abusivas de plataformas terceiras e garante um contacto direto e humanizado, perfeito para o fecho imediato da venda e fidelização do dono do pet.
@@ -89,7 +108,7 @@
         </section>
 
         <!-- Tópico 4 -->
-        <section id="planos" class="mb-16 p-8 bg-gray-50 border border-gray-200 rounded-lg">
+        <section id="planos" class="mb-16 p-8 bg-gray-50 border border-gray-200 rounded-lg scroll-mt-24">
             <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6 text-center">A Escolha do Plano Ideal</h2>
             <p>
                 Pensamos em soluções que acompanham o momento e a necessidade do seu negócio. O <strong>Plano 1</strong> é a porta de entrada ideal: por apenas 99 reais mensais, recebe o aplicativo da loja online completo, o treino detalhado de uso e todo o nosso suporte especializado. É a escolha perfeita para quem quer colocar as mãos à obra e gerir a sua própria vitrine digital.
