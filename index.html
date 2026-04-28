@@ -1,297 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  MapPin, 
-  Download, 
-  LayoutGrid, 
-  ShoppingBag, 
-  Scissors, 
-  Bell, 
-  ChevronRight, 
-  Lock,
-  ArrowRight,
-  CheckCircle2
-} from 'lucide-react';
-
-// --- Mock Data ---
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Ração Golden Seleção Natural para Gatos Adultos Castrados Sabor Frango com Abóbora e Alecrim 1kg",
-    price: 31.90,
-    oldPrice: 32.90,
-    category: "Gatos",
-    image: "https://images.tcdn.com.br/img/img_prod/697931/racao_golden_selecao_natural_para_gatos_adultos_castrados_sabor_frango_com_abobora_e_alecrim_1kg_2465_1_20201104165620.jpg"
-  },
-  {
-    id: 2,
-    name: "Ração Golden para Gatos Adultos Castrados Sabor Salmão",
-    price: 33.50,
-    oldPrice: 39.50,
-    category: "Gatos",
-    image: "https://images.tcdn.com.br/img/img_prod/697931/racao_golden_para_gatos_adultos_castrados_sabor_salmao_1kg_2461_1_20201104165619.jpg"
-  },
-  {
-    id: 3,
-    name: "Ração GranPlus Choice Frango e Carne para Cães Adultos 10,1 kg",
-    price: 116.90,
-    oldPrice: 122.90,
-    category: "Cães",
-    image: "https://images.tcdn.com.br/img/img_prod/697931/racao_granplus_choice_frango_e_carne_para_caes_adultos_10_1_kg_2469_1_20201104165621.jpg"
-  }
-];
-
-const CATEGORIES = ["Todos", "Cães", "Gatos", "Acessórios", "Higiene"];
-
-// --- Components ---
-
-const Logo = () => (
-  <div className="flex items-center gap-2">
-    <div className="relative w-10 h-10 flex items-center justify-center">
-      {/* Simplified SVG Logo based on image */}
-      <svg viewBox="0 0 100 100" className="w-full h-full">
-        <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 80 L30 80 Z" fill="#0A365C" />
-        <path d="M50 40 Q50 60 70 60 L90 60 L90 80 Q90 90 80 90 L50 90 Z" fill="#FF8A7A" />
-        <circle cx="25" cy="35" r="8" fill="#FF8A7A" />
-        <circle cx="40" cy="20" r="8" fill="#FF8A7A" />
-        <circle cx="60" cy="20" r="8" fill="#FF8A7A" />
-        <circle cx="75" cy="35" r="8" fill="#FF8A7A" />
-      </svg>
-    </div>
-    <div className="flex flex-col">
-      <span className="text-[#0A365C] font-bold text-xl leading-none">PetLojas</span>
-      <span className="text-[#FF8A7A] text-[8px] font-bold uppercase tracking-tighter">A sua loja online</span>
-    </div>
-  </div>
-);
-
-const App = () => {
-  const [activeTab, setActiveTab] = useState('vitrine');
-  const [selectedCategory, setSelectedCategory] = useState('Todos');
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const filteredProducts = PRODUCTS.filter(p => 
-    (selectedCategory === 'Todos' || p.category === selectedCategory) &&
-    (p.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  );
-
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col max-w-md mx-auto shadow-2xl relative pb-20">
-      {/* Top Banner */}
-      <div className="bg-[#E31E24] text-white text-[10px] py-1 text-center font-bold tracking-widest uppercase">
-        Versão de Demonstração
-      </div>
-
-      {/* Header */}
-      <header className="bg-white p-4 sticky top-0 z-50 shadow-sm">
-        <div className="flex justify-between items-center mb-4">
-          <Logo />
-          <div className="flex items-center gap-3">
-            <button className="flex items-center gap-1 border border-[#009688] text-[#009688] px-3 py-1.5 rounded-lg text-xs font-bold transition-colors hover:bg-teal-50">
-              Instalar App
-            </button>
-            <div className="bg-gray-100 p-2 rounded-full text-gray-500">
-              <MapPin size={18} />
-            </div>
-          </div>
-        </div>
-
-        {/* Search Bar */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-          <input 
-            type="text" 
-            placeholder="Buscar por ração, banho, gatos..."
-            className="w-full bg-gray-100 border-none rounded-xl py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-[#009688] outline-none"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-1">
-        {activeTab === 'vitrine' && (
-          <div className="p-4 space-y-6 animate-in fade-in duration-300">
-            {/* Categories */}
-            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
-              {CATEGORIES.map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
-                    selectedCategory === cat 
-                      ? 'bg-[#009688] text-white shadow-md' 
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+<section id="demonstracao" class="mb-16 bg-white py-12 border-y border-gray-100 scroll-mt-24">
+            <div class="max-w-4xl mx-auto px-6 mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold text-brand">
+                    Veja o aplicativo <span class="text-brand-orange">na prática</span>
+                </h2>
+                <p class="text-gray-600 mt-2">
+                    Deslize para ver como os seus clientes vão navegar, escolher produtos e interagir com a sua nova vitrine digital.
+                </p>
             </div>
 
-            {/* Title Section */}
-            <div className="flex items-center gap-2">
-              <div className="bg-[#009688] p-1.5 rounded-lg text-white">
-                <ShoppingBag size={20} />
-              </div>
-              <div className="flex flex-col">
-                <h2 className="text-xl font-bold text-[#0A365C]">Produtos</h2>
-                <p className="text-xs text-gray-500 font-medium">Nossa vitrine de rações, brinquedos e acessórios.</p>
-              </div>
-            </div>
-
-            {/* Product Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              {filteredProducts.map(product => (
-                <div key={product.id} className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 flex flex-col justify-between group">
-                  <div>
-                    <div className="aspect-square relative mb-3 overflow-hidden rounded-xl">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform"
-                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=PetShop' }}
-                      />
+            <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-8 max-w-5xl mx-auto hide-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
+                
+                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-gray-900 rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                    <video src="video1.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                    <div class="absolute top-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
+                        ▶ Vídeo
                     </div>
-                    <h3 className="text-[13px] font-bold text-gray-800 leading-tight line-clamp-3 mb-2 h-[48px]">
-                      {product.name}
-                    </h3>
-                  </div>
-                  <div className="mt-2">
-                    <div className="text-[10px] text-gray-400 line-through">R$ {product.oldPrice.toFixed(2)}</div>
-                    <div className="text-lg font-extrabold text-[#009688]">R$ {product.price.toFixed(2).replace('.', ',')}</div>
-                    
-                    <button className="w-full mt-3 flex items-center justify-center gap-1 text-[11px] font-bold text-[#009688] border border-[#009688] py-2 rounded-xl hover:bg-teal-50 transition-colors uppercase tracking-tight">
-                      Garantir com a Loja <ChevronRight size={14} />
-                    </button>
-                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {activeTab === 'ofertas' && (
-          <div className="p-4 space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-            {/* Clube de Ofertas Content */}
-            <div className="text-center space-y-4 py-6">
-              <div className="flex justify-center">
-                <div className="bg-green-50 p-6 rounded-full relative">
-                  <Bell className="text-[#009688] w-12 h-12" />
-                  <div className="absolute top-0 right-0 bg-[#009688] text-white p-1 rounded-full border-2 border-white">
-                    <CheckCircle2 size={16} />
-                  </div>
+                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-white rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                    <img src="img1.jpg" alt="Ecrã do Aplicativo 1" class="w-full h-full object-cover object-top">
                 </div>
-              </div>
-              <h1 className="text-3xl font-black text-[#0A365C]">Clube de Ofertas</h1>
-              <p className="text-gray-500 text-sm max-w-[280px] mx-auto font-medium">
-                Não perca nenhuma novidade, promoção relâmpago ou aviso importante da nossa loja.
-              </p>
+
+                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-white rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                    <img src="img2.jpg" alt="Ecrã do Aplicativo 2" class="w-full h-full object-cover object-top">
+                </div>
+
+                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-white rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                    <img src="img3.jpg" alt="Ecrã do Aplicativo 3" class="w-full h-full object-cover object-top">
+                </div>
+                
+                <div class="snap-center shrink-0 w-2 md:w-6"></div>
             </div>
 
-            {/* How it works card */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
-              <div className="flex items-center gap-2 text-[#009688] font-bold">
-                <CheckCircle2 size={18} />
-                <span>Como funciona?</span>
-              </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Para garantir que recebe os nossos avisos de forma rápida, utilizamos <strong>Grupos Silenciosos no WhatsApp</strong>. Somente a nossa loja envia mensagens. Sem spam.
-              </p>
-              
-              <div className="flex items-center gap-2 text-[#0A365C] font-bold pt-2">
-                <Lock size={16} />
-                <span className="text-xs uppercase tracking-wider">Privacidade garantida:</span>
-              </div>
-              <p className="text-[13px] text-gray-500 italic">
-                As configurações do grupo não permitem que o seu número fique exposto para os outros membros.
-              </p>
-            </div>
+            <style>
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+            </style>
+        </section>
+        ```
 
-            {/* Group Selection */}
-            <div className="space-y-3">
-              <h3 className="font-bold text-[#0A365C] text-center">Escolha um grupo para entrar:</h3>
-              
-              <div className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-gray-100 opacity-60">
-                <div className="flex items-center gap-4">
-                  <div className="bg-gray-100 p-3 rounded-xl">
-                    <Lock size={20} className="text-gray-400" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-800">Grupo #01</div>
-                    <div className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Lotação Máxima</div>
-                  </div>
-                </div>
-                <div className="bg-gray-100 text-gray-500 px-4 py-1.5 rounded-lg text-xs font-bold">
-                  Lotado
-                </div>
-              </div>
+### O que precisa de fazer:
 
-              <button className="w-full bg-white rounded-2xl p-4 flex items-center justify-between shadow-md border border-[#009688] group hover:bg-[#009688] transition-all">
-                <div className="flex items-center gap-4">
-                  <div className="bg-teal-50 p-3 rounded-xl group-hover:bg-teal-700">
-                    <Bell size={20} className="text-[#009688] group-hover:text-white" />
-                  </div>
-                  <div className="text-left">
-                    <div className="font-bold text-gray-800 group-hover:text-white">Grupo #02</div>
-                    <div className="text-[10px] text-[#009688] group-hover:text-teal-200 uppercase font-bold tracking-widest">Disponível</div>
-                  </div>
-                </div>
-                <div className="bg-[#009688] text-white px-4 py-1.5 rounded-lg text-xs font-bold group-hover:bg-white group-hover:text-[#009688]">
-                  Entrar no Grupo
-                </div>
-              </button>
-            </div>
-          </div>
-        )}
-      </main>
+1. **Os Ficheiros:** Certifique-se de que coloca os seus ficheiros reais (`video1.mp4`, `img1.jpg`, `img2.jpg` e `img3.jpg`) **exatamente na mesma pasta** onde está o ficheiro `index.html` no seu GitHub.
+2. **Atenção às extensões:** No código acima, presumi que as imagens são `.jpg` e o vídeo é `.mp4`. Se as suas imagens estiverem em formato `.png` (por exemplo, `img1.png`), lembre-se de alterar apenas o nome no código onde diz `<img src="img1.jpg"...` para `<img src="img1.png"...`.
+3. O vídeo já está configurado com `autoplay loop muted playsinline`, que é o padrão ouro para páginas de vendas: ele começa a tocar sozinho sem som e repete-se infinitamente, garantindo que funciona mesmo em telemóveis como o iPhone (que bloqueiam vídeos com som automático). 
+4. A moldura `border-[6px] border-gray-800 rounded-[2rem]` cria automaticamente um "falso smartphone" ao redor da imagem/vídeo, dando um aspeto muito profissional.
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-100 py-3 px-6 flex justify-between items-center shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-50">
-        <NavItem 
-          active={activeTab === 'vitrine'} 
-          icon={<LayoutGrid size={24} />} 
-          label="Vitrine" 
-          onClick={() => setActiveTab('vitrine')} 
-        />
-        <NavItem 
-          active={activeTab === 'produtos'} 
-          icon={<ShoppingBag size={24} />} 
-          label="Produtos" 
-          onClick={() => setActiveTab('vitrine')} // For logic demo, both can point to products
-        />
-        <NavItem 
-          active={activeTab === 'servicos'} 
-          icon={<Scissors size={24} />} 
-          label="Serviços" 
-          onClick={() => {}} 
-        />
-        <NavItem 
-          active={activeTab === 'ofertas'} 
-          icon={<Bell size={24} />} 
-          label="Ofertas" 
-          onClick={() => setActiveTab('ofertas')} 
-        />
-      </nav>
-      
-      {/* Custom Styles for no-scrollbar */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}} />
-    </div>
-  );
-};
-
-const NavItem = ({ active, icon, label, onClick }) => (
-  <button 
-    onClick={onClick}
-    className={`flex flex-col items-center gap-1 transition-colors ${active ? 'text-[#009688]' : 'text-gray-400'}`}
-  >
-    {icon}
-    <span className={`text-[10px] font-bold ${active ? 'opacity-100' : 'opacity-70'}`}>{label}</span>
-  </button>
-);
-
-export default App;
+Basta colar o código e os seus ficheiros na pasta raiz que o efeito de deslizar no telemóvel ficará perfeito!
