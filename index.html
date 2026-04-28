@@ -1,347 +1,297 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetLojas - O Endereço Oficial do Seu Petshop na Internet</title>
-    
-    <!-- Configuração do Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            DEFAULT: '#3B5B85', // Azul levemente mais claro e moderno
-                            dark: '#264060',
-                            orange: '#F29C5A', // Coral Oficial
-                            lightbg: '#F9FAFB'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.8;
-            color: #333333;
-        }
-        p {
-            margin-bottom: 1.5rem;
-            font-size: 1.125rem;
-        }
-        /* Efeito hover suave nos cards de preço */
-        .pricing-card:hover {
-            transform: translateY(-5px);
-            transition: all 0.3s ease;
-        }
-    </style>
-    <script>
-        // Forçar a página a abrir sempre no topo ao recarregar
-        if (history.scrollRestoration) {
-            history.scrollRestoration = 'manual';
-        }
-        window.addEventListener('load', function() {
-            window.scrollTo(0, 0);
-        });
-    </script>
-</head>
-<body class="bg-gray-50 antialiased">
+import React, { useState, useEffect } from 'react';
+import { 
+  Search, 
+  MapPin, 
+  Download, 
+  LayoutGrid, 
+  ShoppingBag, 
+  Scissors, 
+  Bell, 
+  ChevronRight, 
+  Lock,
+  ArrowRight,
+  CheckCircle2
+} from 'lucide-react';
 
-    <!-- Barra de Navegação -->
-    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="font-bold text-brand text-2xl tracking-tight font-black">Pet<span class="text-brand-orange">Lojas</span></div>
-            <div class="hidden md:flex space-x-6 font-medium">
-                <a href="#inicio" class="text-gray-600 hover:text-brand transition">Início</a>
-                <a href="#vantagens" class="text-gray-600 hover:text-brand transition">Vantagens</a>
-                <a href="#planos" class="text-brand-orange hover:text-brand transition font-bold">Ver Planos</a>
-                <a href="#faq" class="text-gray-600 hover:text-brand transition">FAQ</a>
+// --- Mock Data ---
+const PRODUCTS = [
+  {
+    id: 1,
+    name: "Ração Golden Seleção Natural para Gatos Adultos Castrados Sabor Frango com Abóbora e Alecrim 1kg",
+    price: 31.90,
+    oldPrice: 32.90,
+    category: "Gatos",
+    image: "https://images.tcdn.com.br/img/img_prod/697931/racao_golden_selecao_natural_para_gatos_adultos_castrados_sabor_frango_com_abobora_e_alecrim_1kg_2465_1_20201104165620.jpg"
+  },
+  {
+    id: 2,
+    name: "Ração Golden para Gatos Adultos Castrados Sabor Salmão",
+    price: 33.50,
+    oldPrice: 39.50,
+    category: "Gatos",
+    image: "https://images.tcdn.com.br/img/img_prod/697931/racao_golden_para_gatos_adultos_castrados_sabor_salmao_1kg_2461_1_20201104165619.jpg"
+  },
+  {
+    id: 3,
+    name: "Ração GranPlus Choice Frango e Carne para Cães Adultos 10,1 kg",
+    price: 116.90,
+    oldPrice: 122.90,
+    category: "Cães",
+    image: "https://images.tcdn.com.br/img/img_prod/697931/racao_granplus_choice_frango_e_carne_para_caes_adultos_10_1_kg_2469_1_20201104165621.jpg"
+  }
+];
+
+const CATEGORIES = ["Todos", "Cães", "Gatos", "Acessórios", "Higiene"];
+
+// --- Components ---
+
+const Logo = () => (
+  <div className="flex items-center gap-2">
+    <div className="relative w-10 h-10 flex items-center justify-center">
+      {/* Simplified SVG Logo based on image */}
+      <svg viewBox="0 0 100 100" className="w-full h-full">
+        <path d="M30 40 Q30 20 50 20 Q70 20 70 40 L70 80 L30 80 Z" fill="#0A365C" />
+        <path d="M50 40 Q50 60 70 60 L90 60 L90 80 Q90 90 80 90 L50 90 Z" fill="#FF8A7A" />
+        <circle cx="25" cy="35" r="8" fill="#FF8A7A" />
+        <circle cx="40" cy="20" r="8" fill="#FF8A7A" />
+        <circle cx="60" cy="20" r="8" fill="#FF8A7A" />
+        <circle cx="75" cy="35" r="8" fill="#FF8A7A" />
+      </svg>
+    </div>
+    <div className="flex flex-col">
+      <span className="text-[#0A365C] font-bold text-xl leading-none">PetLojas</span>
+      <span className="text-[#FF8A7A] text-[8px] font-bold uppercase tracking-tighter">A sua loja online</span>
+    </div>
+  </div>
+);
+
+const App = () => {
+  const [activeTab, setActiveTab] = useState('vitrine');
+  const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredProducts = PRODUCTS.filter(p => 
+    (selectedCategory === 'Todos' || p.category === selectedCategory) &&
+    (p.name.toLowerCase().includes(searchQuery.toLowerCase()))
+  );
+
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col max-w-md mx-auto shadow-2xl relative pb-20">
+      {/* Top Banner */}
+      <div className="bg-[#E31E24] text-white text-[10px] py-1 text-center font-bold tracking-widest uppercase">
+        Versão de Demonstração
+      </div>
+
+      {/* Header */}
+      <header className="bg-white p-4 sticky top-0 z-50 shadow-sm">
+        <div className="flex justify-between items-center mb-4">
+          <Logo />
+          <div className="flex items-center gap-3">
+            <button className="flex items-center gap-1 border border-[#009688] text-[#009688] px-3 py-1.5 rounded-lg text-xs font-bold transition-colors hover:bg-teal-50">
+              Instalar App
+            </button>
+            <div className="bg-gray-100 p-2 rounded-full text-gray-500">
+              <MapPin size={18} />
             </div>
+          </div>
         </div>
-    </nav>
 
-    <header id="inicio" class="bg-white border-b border-gray-200 scroll-mt-20">
-        <div class="max-w-4xl mx-auto px-6 py-12 text-center">
-            
-            <!-- LOGOTIPO CARREGADO DA PASTA RAIZ -->
-            <div class="mb-8 flex justify-center">
-                <div class="w-full max-w-[280px] flex items-center justify-center">
-                    <img src="petlojas.png" alt="Logotipo PetLojas" class="w-full h-auto object-contain drop-shadow-sm">
-                </div>
+        {/* Search Bar */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+          <input 
+            type="text" 
+            placeholder="Buscar por ração, banho, gatos..."
+            className="w-full bg-gray-100 border-none rounded-xl py-3 pl-10 pr-4 text-sm focus:ring-2 focus:ring-[#009688] outline-none"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1">
+        {activeTab === 'vitrine' && (
+          <div className="p-4 space-y-6 animate-in fade-in duration-300">
+            {/* Categories */}
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
+                    selectedCategory === cat 
+                      ? 'bg-[#009688] text-white shadow-md' 
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
-            <!-- FIM DO LOGOTIPO -->
 
-            <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Sempre quis que o seu petshop vendesse mais, <span class="text-brand">atendendo a toda a cidade?</span>
-            </h1>
-            <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto">
-                Transforme seu negócio local em uma máquina de vendas com o seu aplicativo próprio. Nós cuidamos da tecnologia, você foca em faturar.
-            </p>
-            <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20vim%20pelo%20in%C3%ADcio%20do%20site%20da%20PetLojas%20e%20quero%20criar%20minha%20loja%20online.%20Como%20funciona%3F" target="_blank" class="inline-block bg-brand hover:bg-brand-dark text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
-                Criar Minha Loja Agora
-            </a>
-        </div>
-    </header>
+            {/* Title Section */}
+            <div className="flex items-center gap-2">
+              <div className="bg-[#009688] p-1.5 rounded-lg text-white">
+                <ShoppingBag size={20} />
+              </div>
+              <div className="flex flex-col">
+                <h2 className="text-xl font-bold text-[#0A365C]">Produtos</h2>
+                <p className="text-xs text-gray-500 font-medium">Nossa vitrine de rações, brinquedos e acessórios.</p>
+              </div>
+            </div>
 
-    <!-- Conteúdo Principal -->
-    <main class="max-w-4xl mx-auto px-6 py-16 my-8">
-
-        <!-- O Desejo e Benefícios -->
-        <section id="vantagens" class="mb-16 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6">
-                Muito mais que um catálogo. <span class="text-brand-orange">O seu endereço oficial na internet.</span>
-            </h2>
-            <p>
-                Expandir o atendimento para toda a cidade e profissionalizar as suas vendas não precisa ser um processo caro ou complicado. Com a PetLojas, você recebe uma loja online completa, personalizada com a identidade visual da sua empresa.
-            </p>
-            <p>
-                <strong>E o melhor:</strong> Garantimos um endereço de altíssima velocidade na internet gratuitamente através de um subdomínio seguro (tecnologia Vercel). Caso prefira construir ainda mais autoridade, você tem total flexibilidade para adquirir e conectar o seu domínio próprio e exclusivo (exemplo: <em>www.seupetshop.com.br</em>). A sua marca, as suas regras.
-            </p>
-        </section>
-
-        <!-- A Diferença -->
-        <section class="mb-16">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6">
-                Como a nossa tecnologia <span class="text-brand-orange">facilita a sua vida:</span>
-            </h2>
-            <p>
-                O grande diferencial do nosso sistema é a união da extrema simplicidade com a ausência de taxas de intermediação. A sua loja terá um baixo custo de manutenção porque otimizamos o momento crucial: a venda.
-            </p>
-            <p>
-                Na sua vitrine digital, você tem liberdade total! É possível postar <strong>promoções, infinitos produtos e serviços</strong>, além de <strong>conteúdo de valor em imagens e vídeos</strong> e muito mais. O cliente escolhe o que deseja e o pedido chega detalhado <strong>diretamente no seu WhatsApp</strong>. Sem comissões abusivas de terceiros, você foca no fechamento imediato da venda.
-            </p>
-            <p class="bg-blue-50 border-l-4 border-brand p-4 rounded text-gray-700">
-                <strong>Notificações Inteligentes:</strong> Para garantir que o seu petshop seja sempre lembrado, os seus clientes serão notificados via WhatsApp das novidades e ofertas lançadas na sua loja!
-            </p>
-        </section>
-
-        <!-- Suporte -->
-        <section class="mb-16 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">
-                Você nunca estará sozinho.
-            </h2>
-            <p>
-                Sabemos que a transição para o digital pode gerar inseguranças. Por isso, ao adotar o aplicativo PetLojas, você terá à sua disposição especialistas em software e em marketing focados exclusivamente em negócios locais. 
-            </p>
-            <p>
-                Seja para tirar uma dúvida sobre como destacar um produto ou para entender a melhor estratégia para atrair mais clientes na sua região, nossa equipe estará ao seu lado. O nosso compromisso é garantir que o seu sucesso online aconteça de verdade.
-            </p>
-        </section>
-
-        <!-- Call to Action (Planos em Cards) -->
-        <section id="planos" class="mb-16 scroll-mt-24">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-brand mb-10">
-                Escolha o plano ideal para <span class="text-brand-orange">escalar suas vendas</span>
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-                
-                <!-- Card Plano 1 -->
-                <div class="pricing-card bg-white border border-gray-200 rounded-2xl shadow-lg p-8 flex flex-col relative">
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Essencial</h3>
-                    <p class="text-gray-500 text-sm mb-6">A porta de entrada ideal para quem quer gerenciar a própria vitrine digital.</p>
-                    <div class="text-4xl font-black text-brand mb-6">
-                        R$ 99<span class="text-lg font-medium text-gray-500">/mês</span>
+            {/* Product Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {filteredProducts.map(product => (
+                <div key={product.id} className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 flex flex-col justify-between group">
+                  <div>
+                    <div className="aspect-square relative mb-3 overflow-hidden rounded-xl">
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                        onError={(e) => { e.target.src = 'https://via.placeholder.com/150?text=PetShop' }}
+                      />
                     </div>
+                    <h3 className="text-[13px] font-bold text-gray-800 leading-tight line-clamp-3 mb-2 h-[48px]">
+                      {product.name}
+                    </h3>
+                  </div>
+                  <div className="mt-2">
+                    <div className="text-[10px] text-gray-400 line-through">R$ {product.oldPrice.toFixed(2)}</div>
+                    <div className="text-lg font-extrabold text-[#009688]">R$ {product.price.toFixed(2).replace('.', ',')}</div>
                     
-                    <ul class="mb-8 space-y-4 flex-grow">
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span class="text-gray-600">Aplicativo de Loja Online Completo</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span class="text-gray-600">Subdomínio Grátis ou Domínio Próprio</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span class="text-gray-600">Vitrine com Imagens, Vídeos e Notificações</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span class="text-gray-600">Treinamento e Suporte Especializado</span>
-                        </li>
-                    </ul>
-                    
-                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20Gv%20Conecta%21%20Quero%20assinar%20o%20PLANO%20ESSENCIAL%20%28R%24%2099%2Fm%C3%AAs%29%20da%20PetLojas.%20Como%20fa%C3%A7o%20para%20come%C3%A7ar%3F" target="_blank" class="w-full block text-center bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition duration-300">
-                        Assinar Essencial
-                    </a>
+                    <button className="w-full mt-3 flex items-center justify-center gap-1 text-[11px] font-bold text-[#009688] border border-[#009688] py-2 rounded-xl hover:bg-teal-50 transition-colors uppercase tracking-tight">
+                      Garantir com a Loja <ChevronRight size={14} />
+                    </button>
+                  </div>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-                <!-- Card Plano 2 -->
-                <div class="pricing-card bg-white border-2 border-brand-orange rounded-2xl shadow-xl p-8 flex flex-col relative overflow-hidden">
-                    <div class="absolute top-0 right-0 bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-bl-lg">MAIS COMPLETO</div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Completo</h3>
-                    <p class="text-gray-500 text-sm mb-6">Para quem deseja escalar os resultados sem ter trabalho manual.</p>
-                    <div class="text-3xl font-black text-brand mb-6 mt-1">
-                        Sob Consulta
-                    </div>
-                    
-                    <ul class="mb-8 space-y-4 flex-grow">
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-brand-orange mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span class="text-gray-800 font-semibold">Tudo do Plano Essencial, mais:</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span class="text-gray-600"><strong>Tráfego Pago:</strong> Mão de obra dedicada para anúncios.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            <span class="text-gray-600"><strong>Gestão de Catálogo:</strong> Cadastramento de produtos e serviços feito por nós.</span>
-                        </li>
-                    </ul>
-                    
-                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20Gv%20Conecta%21%20Quero%20saber%20mais%20sobre%20o%20PLANO%20COMPLETO%20da%20PetLojas%2C%20com%20tr%C3%A1fego%20e%20gest%C3%A3o%20de%20cat%C3%A1logo." target="_blank" class="w-full block text-center bg-brand-orange hover:bg-orange-500 text-white font-bold py-3 rounded-lg transition duration-300">
-                        Falar com Especialista
-                    </a>
+        {activeTab === 'ofertas' && (
+          <div className="p-4 space-y-6 animate-in slide-in-from-bottom-4 duration-300">
+            {/* Clube de Ofertas Content */}
+            <div className="text-center space-y-4 py-6">
+              <div className="flex justify-center">
+                <div className="bg-green-50 p-6 rounded-full relative">
+                  <Bell className="text-[#009688] w-12 h-12" />
+                  <div className="absolute top-0 right-0 bg-[#009688] text-white p-1 rounded-full border-2 border-white">
+                    <CheckCircle2 size={16} />
+                  </div>
                 </div>
+              </div>
+              <h1 className="text-3xl font-black text-[#0A365C]">Clube de Ofertas</h1>
+              <p className="text-gray-500 text-sm max-w-[280px] mx-auto font-medium">
+                Não perca nenhuma novidade, promoção relâmpago ou aviso importante da nossa loja.
+              </p>
             </div>
 
-            <!-- Condições Transparentes -->
-            <div class="mt-8 text-center bg-green-50 text-green-800 py-3 px-4 rounded-lg max-w-3xl mx-auto border border-green-100">
-                <p class="text-sm font-medium">
-                    ✨ <strong>Condições Transparentes:</strong> A taxa de implantação da loja de <strike class="text-gray-500">R$ 50,00</strike> é <strong>totalmente isenta</strong>! Trabalhamos com mensalidades antecipadas e <strong>sem fidelidade</strong> (cancele quando quiser).
-                </p>
+            {/* How it works card */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-4">
+              <div className="flex items-center gap-2 text-[#009688] font-bold">
+                <CheckCircle2 size={18} />
+                <span>Como funciona?</span>
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                Para garantir que recebe os nossos avisos de forma rápida, utilizamos <strong>Grupos Silenciosos no WhatsApp</strong>. Somente a nossa loja envia mensagens. Sem spam.
+              </p>
+              
+              <div className="flex items-center gap-2 text-[#0A365C] font-bold pt-2">
+                <Lock size={16} />
+                <span className="text-xs uppercase tracking-wider">Privacidade garantida:</span>
+              </div>
+              <p className="text-[13px] text-gray-500 italic">
+                As configurações do grupo não permitem que o seu número fique exposto para os outros membros.
+              </p>
             </div>
 
-            <!-- Box de Setup Facultativo -->
-            <div class="mt-8 bg-brand-lightbg border border-gray-200 rounded-lg p-6 max-w-3xl mx-auto text-center">
-                <span class="inline-block bg-gray-200 text-gray-700 text-xs font-bold px-3 py-1 rounded-full mb-3">OPCIONAL</span>
-                <h4 class="font-bold text-gray-800 mb-2">Acelerador de Lançamento: 60 produtos por R$ 100,00 <span class="text-brand-orange">(Pagamento Único)</span></h4>
-                <p class="text-sm text-gray-600 mb-4">Seu tempo é focado em gerenciar o negócio. Se quiser, nossa equipe inaugura a plataforma cadastrando profissionalmente os seus primeiros 60 produtos e serviços por uma taxa única, para você começar a faturar imediatamente.</p>
-                <a href="https://wa.me/5533999333644?text=Ol%C3%A1%21%20Vou%20querer%20a%20PetLojas%20e%20tenho%20interesse%20em%20adicionar%20o%20ACELERADOR%20DE%20LAN%C3%87AMENTO%20%28R%24%20100%29%20para%20voc%C3%AAs%20cadastrarem%20meus%2060%20produtos." target="_blank" class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-md transition duration-300 text-sm">
-                    Quero incluir o Acelerador
-                </a>
+            {/* Group Selection */}
+            <div className="space-y-3">
+              <h3 className="font-bold text-[#0A365C] text-center">Escolha um grupo para entrar:</h3>
+              
+              <div className="bg-white rounded-2xl p-4 flex items-center justify-between shadow-sm border border-gray-100 opacity-60">
+                <div className="flex items-center gap-4">
+                  <div className="bg-gray-100 p-3 rounded-xl">
+                    <Lock size={20} className="text-gray-400" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-800">Grupo #01</div>
+                    <div className="text-[10px] text-gray-400 uppercase font-bold tracking-widest">Lotação Máxima</div>
+                  </div>
+                </div>
+                <div className="bg-gray-100 text-gray-500 px-4 py-1.5 rounded-lg text-xs font-bold">
+                  Lotado
+                </div>
+              </div>
+
+              <button className="w-full bg-white rounded-2xl p-4 flex items-center justify-between shadow-md border border-[#009688] group hover:bg-[#009688] transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="bg-teal-50 p-3 rounded-xl group-hover:bg-teal-700">
+                    <Bell size={20} className="text-[#009688] group-hover:text-white" />
+                  </div>
+                  <div className="text-left">
+                    <div className="font-bold text-gray-800 group-hover:text-white">Grupo #02</div>
+                    <div className="text-[10px] text-[#009688] group-hover:text-teal-200 uppercase font-bold tracking-widest">Disponível</div>
+                  </div>
+                </div>
+                <div className="bg-[#009688] text-white px-4 py-1.5 rounded-lg text-xs font-bold group-hover:bg-white group-hover:text-[#009688]">
+                  Entrar no Grupo
+                </div>
+              </button>
             </div>
+          </div>
+        )}
+      </main>
 
-        </section>
+      {/* Bottom Navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-100 py-3 px-6 flex justify-between items-center shadow-[0_-4px_10px_rgba(0,0,0,0.03)] z-50">
+        <NavItem 
+          active={activeTab === 'vitrine'} 
+          icon={<LayoutGrid size={24} />} 
+          label="Vitrine" 
+          onClick={() => setActiveTab('vitrine')} 
+        />
+        <NavItem 
+          active={activeTab === 'produtos'} 
+          icon={<ShoppingBag size={24} />} 
+          label="Produtos" 
+          onClick={() => setActiveTab('vitrine')} // For logic demo, both can point to products
+        />
+        <NavItem 
+          active={activeTab === 'servicos'} 
+          icon={<Scissors size={24} />} 
+          label="Serviços" 
+          onClick={() => {}} 
+        />
+        <NavItem 
+          active={activeTab === 'ofertas'} 
+          icon={<Bell size={24} />} 
+          label="Ofertas" 
+          onClick={() => setActiveTab('ofertas')} 
+        />
+      </nav>
+      
+      {/* Custom Styles for no-scrollbar */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `}} />
+    </div>
+  );
+};
 
-        <!-- CTA Final e FAQ -->
-        <section id="faq" class="mb-16 border-t border-gray-200 pt-16 scroll-mt-24">
-            
-            <!-- Frase de Impacto -->
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-black text-brand mb-4">
-                    Não fique para trás e <span class="text-brand-orange">venda para toda a cidade!</span>
-                </h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    A digitalização do seu petshop já não é mais o futuro, é o presente. Garanta o seu espaço online antes que a concorrência o faça.
-                </p>
-            </div>
+const NavItem = ({ active, icon, label, onClick }) => (
+  <button 
+    onClick={onClick}
+    className={`flex flex-col items-center gap-1 transition-colors ${active ? 'text-[#009688]' : 'text-gray-400'}`}
+  >
+    {icon}
+    <span className={`text-[10px] font-bold ${active ? 'opacity-100' : 'opacity-70'}`}>{label}</span>
+  </button>
+);
 
-            <!-- Início Perguntas Frequentes -->
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-brand mb-10">
-                Perguntas <span class="text-brand-orange">Frequentes</span>
-            </h2>
-            
-            <div class="max-w-3xl mx-auto space-y-4">
-                
-                <!-- FAQ 1 -->
-                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
-                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
-                        Preciso entender de tecnologia para usar a loja?
-                        <span class="transition group-open:rotate-180 text-brand">
-                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-                        </span>
-                    </summary>
-                    <p class="text-gray-600 mt-4 leading-relaxed">Absolutamente não. A plataforma foi criada para ser simples e muito intuitiva. Além disso, no Plano Essencial você recebe treinamento completo, e no Plano Completo nós até cadastramos os produtos e serviços para você!</p>
-                </details>
-
-                <!-- FAQ 2 -->
-                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
-                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
-                        Como recebo o dinheiro das vendas?
-                        <span class="transition group-open:rotate-180 text-brand">
-                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-                        </span>
-                    </summary>
-                    <p class="text-gray-600 mt-4 leading-relaxed">Os pedidos são enviados detalhadamente para o seu WhatsApp. Isso significa que você negocia e recebe o pagamento diretamente do seu cliente (via Pix, cartão, link de pagamento ou no ato da entrega), sem o seu dinheiro ficar retido em plataformas.</p>
-                </details>
-
-                <!-- FAQ 3 -->
-                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
-                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
-                        Tem alguma taxa sobre as vendas que eu fizer?
-                        <span class="transition group-open:rotate-180 text-brand">
-                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-                        </span>
-                    </summary>
-                    <p class="text-gray-600 mt-4 leading-relaxed">Zero taxas! Diferente de outros aplicativos de entrega conhecidos, nós não cobramos nenhuma comissão ou percentagem sobre as suas vendas. Todo o lucro gerado na loja é 100% seu.</p>
-                </details>
-
-                <!-- FAQ 4 -->
-                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
-                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
-                        Consigo vender serviços, como banho e tosa?
-                        <span class="transition group-open:rotate-180 text-brand">
-                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-                        </span>
-                    </summary>
-                    <p class="text-gray-600 mt-4 leading-relaxed">Sim! Você tem total liberdade na sua vitrine para cadastrar tanto produtos físicos (rações, roupinhas, medicamentos) quanto serviços agendáveis (banho, tosa, creche, consultas veterinárias).</p>
-                </details>
-
-                <!-- FAQ 5 -->
-                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
-                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
-                        Posso usar o domínio próprio do meu petshop?
-                        <span class="transition group-open:rotate-180 text-brand">
-                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-                        </span>
-                    </summary>
-                    <p class="text-gray-600 mt-4 leading-relaxed">Com certeza. Nós já fornecemos um subdomínio seguro e de alta velocidade gratuitamente, mas se você já tem ou pretende adquirir o seu próprio domínio (ex: www.seupetshop.com.br), basta nos avisar que fazemos a conexão.</p>
-                </details>
-
-                <!-- FAQ 6 -->
-                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
-                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
-                        Existe algum contrato de fidelidade?
-                        <span class="transition group-open:rotate-180 text-brand">
-                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-                        </span>
-                    </summary>
-                    <p class="text-gray-600 mt-4 leading-relaxed">Não prendemos ninguém por contratos longos. A assinatura é mensal e antecipada. Se algum dia você decidir que não quer mais usar a plataforma, basta cancelar a renovação sem multas ou dores de cabeça.</p>
-                </details>
-
-                <!-- FAQ 7 -->
-                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
-                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
-                        Como funciona o Acelerador de Lançamento?
-                        <span class="transition group-open:rotate-180 text-brand">
-                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
-                        </span>
-                    </summary>
-                    <p class="text-gray-600 mt-4 leading-relaxed">É um serviço opcional de taxa única (R$ 100,00). Em vez de você gastar o seu valioso tempo a cadastrar o estoque inicial para inaugurar o site, a nossa equipa insere os 60 produtos e serviços principais da sua loja. O seu site já nasce pronto a vender!</p>
-                </details>
-
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Rodapé Gv Conecta -->
-    <footer class="bg-gray-900 text-gray-400 py-10 border-t-4 border-brand-orange">
-        <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-            <div class="mb-4 md:mb-0">
-                <p class="text-white font-bold text-lg mb-1">PetLojas</p>
-                <p class="text-sm">O endereço da sua loja na internet.</p>
-                <p class="text-xs mt-2 text-gray-500">&copy; 2026 - Todos os direitos reservados.</p>
-            </div>
-            
-            <div class="text-sm border-t md:border-t-0 md:border-l border-gray-700 pt-4 md:pt-0 md:pl-6">
-                <p class="text-gray-500 mb-1">Criação e Desenvolvimento por:</p>
-                <a href="#" class="text-brand-orange font-bold hover:text-white transition">Gv Conecta</a>
-                <p class="text-xs text-gray-400">Marketing para negócios locais</p>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+export default App;
