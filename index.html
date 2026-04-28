@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetLojas - A Sua Loja Online</title>
+    <title>PetLojas - O Endereço Oficial do Seu Petshop na Internet</title>
     
-    <!-- Configuração do Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -13,9 +12,10 @@
                 extend: {
                     colors: {
                         brand: {
-                            DEFAULT: '#0F2C59', // Azul escuro do logo
-                            dark: '#0a1d3b',
-                            orange: '#FF7A59' // Laranja/Coral do logo
+                            DEFAULT: '#3B5B85', // Azul levemente mais claro e moderno
+                            dark: '#264060',
+                            orange: '#F29C5A', // Coral Oficial
+                            lightbg: '#F9FAFB'
                         }
                     }
                 }
@@ -31,108 +31,228 @@
             line-height: 1.8;
             color: #333333;
         }
-        h2 {
-            line-height: 1.3;
-        }
         p {
             margin-bottom: 1.5rem;
             font-size: 1.125rem;
+        }
+        /* Efeito hover suave nos cards de preço */
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
         }
     </style>
 </head>
 <body class="bg-gray-50 antialiased">
 
-    <!-- Barra de Navegação Fixo (One Page) -->
     <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="font-bold text-brand text-2xl tracking-tight font-black">Pet<span class="text-brand-orange">Lojas</span></div>
             <div class="hidden md:flex space-x-6 font-medium">
                 <a href="#inicio" class="text-gray-600 hover:text-brand transition">Início</a>
-                <a href="#como-funciona" class="text-gray-600 hover:text-brand transition">Como Funciona</a>
-                <a href="#planos" class="text-gray-600 hover:text-brand transition">Planos</a>
+                <a href="#vantagens" class="text-gray-600 hover:text-brand transition">Vantagens</a>
+                <a href="#planos" class="text-brand-orange hover:text-brand transition font-bold">Ver Planos</a>
             </div>
         </div>
     </nav>
 
-    <!-- Cabeçalho / Hero Section -->
     <header id="inicio" class="bg-white border-b border-gray-200 scroll-mt-20">
         <div class="max-w-4xl mx-auto px-6 py-12 text-center">
             
-            <!-- LOGOTIPO CARREGADO DA PASTA RAIZ -->
             <div class="mb-8 flex justify-center">
-                <!-- A imagem petlojas.png sendo chamada aqui -->
-                <div class="w-full max-w-[400px] flex items-center justify-center">
-                    <img src="petlojas.png" alt="Logotipo PetLojas" class="w-full h-auto object-contain drop-shadow-sm">
+                <div class="w-64 h-64 overflow-hidden flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+                        <rect width="512" height="512" fill="#FFFFFF"/>
+                        <g transform="translate(256, 256)">
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(220, 0) scale(1.2) rotate(0)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(216, 38)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(203, 75) scale(1.2) rotate(20)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(181, 110)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(155, 155) scale(1.2) rotate(45)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(110, 181)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(75, 203) scale(1.2) rotate(70)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(38, 216)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(0, 220) scale(1.2) rotate(90)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-38, 216)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(-75, 203) scale(1.2) rotate(110)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-110, 181)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(-155, 155) scale(1.2) rotate(135)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-181, 110)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(-203, 75) scale(1.2) rotate(160)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-216, 38)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(-220, 0) scale(1.2) rotate(180)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-216, -38)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(-203, -75) scale(1.2) rotate(200)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-181, -110)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(-155, -155) scale(1.2) rotate(225)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-110, -181)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(-75, -203) scale(1.2) rotate(250)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(-38, -216)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(0, -220) scale(1.2) rotate(270)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(38, -216)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(75, -203) scale(1.2) rotate(290)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(110, -181)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(155, -155) scale(1.2) rotate(315)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(181, -110)"/>
+                            <polygon points="0,-6 1.8,-1.8 6,-1.8 2.4,1.2 3.6,5.4 0,3 -3.6,5.4 -2.4,1.2 -6,-1.8 -1.8,-1.8" fill="#2E4A70" transform="translate(203, -75) scale(1.2) rotate(340)"/>
+                            <circle cx="0" cy="0" r="5" fill="#F29C5A" transform="translate(216, -38)"/>
+                        </g>
+                        <g transform="translate(85, 250)">
+                            <ellipse cx="-15" cy="-45" rx="10" ry="16" fill="#F29C5A" transform="rotate(-30, -15, -45)" />
+                            <ellipse cx="10" cy="-55" rx="11" ry="18" fill="#F29C5A" />
+                            <ellipse cx="35" cy="-45" rx="10" ry="16" fill="#F29C5A" transform="rotate(30, 35, -45)" />
+                            <line x1="-5" y1="-15" x2="-5" y2="40" stroke="#2E4A70" stroke-width="15" stroke-linecap="round"/>
+                            <circle cx="12" cy="0" r="17" fill="none" stroke="#2E4A70" stroke-width="15" />
+                            <path d="M 22 25 L 22 40 L 42 40" fill="none" stroke="#F29C5A" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        <g transform="translate(195, 250)">
+                            <text x="0" y="-10" font-family="Arial, sans-serif" font-weight="900" font-size="62" fill="#2E4A70">Pet<tspan fill="#F29C5A">Lojas</tspan></text>
+                            <text x="0" y="18" font-family="Arial, sans-serif" font-weight="bold" font-size="15" fill="#2E4A70" letter-spacing="2">A SUA LOJA ONLINE</text>
+                            <text x="0" y="35" font-family="Arial, sans-serif" font-weight="bold" font-size="8" fill="#2E4A70" letter-spacing="1">EXPANDINDO SEU PETSHOP PARA TODA A CIDADE</text>
+                        </g>
+                    </svg>
                 </div>
             </div>
-            <!-- FIM DO LOGOTIPO -->
 
             <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-                Sempre quis que o seu petshop vendesse mais, atendendo a toda a cidade?
+                Sempre quis que o seu petshop vendesse mais, <span class="text-brand">atendendo a toda a cidade?</span>
             </h1>
             <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto">
-                Então é hora de criar uma loja online connosco por um investimento que cabe no seu bolso. Oferecemos loja online, tráfego pago e suporte para que o seu sucesso aconteça.
+                Transforme seu negócio local em uma máquina de vendas com o seu aplicativo próprio. Nós cuidamos da tecnologia, você foca em faturar.
             </p>
             <a href="#planos" class="inline-block bg-brand hover:bg-brand-dark text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
-                Ver os Planos Disponíveis
+                Criar Minha Loja Agora
             </a>
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
-    <main class="max-w-4xl mx-auto px-6 py-16 bg-white shadow-sm my-8 rounded-lg border border-gray-100">
+    <main class="max-w-4xl mx-auto px-6 py-16 my-8">
 
-        <section class="mb-16">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">A Transformação do Seu Petshop</h2>
+        <section id="vantagens" class="mb-16 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6">
+                Muito mais que um catálogo. <span class="text-brand-orange">O seu endereço oficial na internet.</span>
+            </h2>
             <p>
-                Expandir o atendimento para toda a cidade e profissionalizar as suas vendas não precisa de ser um processo caro ou complicado. A nossa proposta é entregar uma loja online completa, totalmente personalizada com a identidade visual da sua empresa, por um investimento mensal previsível e bastante acessível. A modernização do seu petshop e o aumento do seu volume de vendas estão agora ao alcance de um clique, sem que precise de se tornar um especialista em tecnologia.
+                Expandir o atendimento para toda a cidade e profissionalizar as suas vendas não precisa ser um processo caro ou complicado. Com a PetLojas, você recebe uma loja online completa, personalizada com a identidade visual da sua empresa.
             </p>
-        </section>
-
-        <section id="como-funciona" class="mb-16 scroll-mt-24">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">Como a Loja Funciona na Prática</h2>
             <p>
-                O grande diferencial da nossa tecnologia é a extrema simplicidade aliada à ausência de taxas de intermediação. A sua loja terá um baixo custo de manutenção porque otimizamos todo o processo de vendas. O seu cliente navega por um catálogo onde pode cadastrar infinitos produtos e serviços, escolhe exatamente o que deseja e o pedido chega diretamente ao seu WhatsApp com uma mensagem pré-programada. Desta forma, elimina taxas abusivas de plataformas terceiras e garante um contacto direto e humanizado, perfeito para o fecho imediato da venda e fidelização do dono do pet.
+                <strong>E o melhor:</strong> Garantimos um endereço de altíssima velocidade na internet gratuitamente através de um subdomínio seguro (tecnologia Vercel). Caso prefira construir ainda mais autoridade, você tem total flexibilidade para adquirir e conectar o seu domínio próprio e exclusivo (exemplo: <em>www.seupetshop.com.br</em>). A sua marca, as suas regras.
             </p>
         </section>
 
         <section class="mb-16">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">Suporte e Acompanhamento Especializado</h2>
+            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6">
+                Como a nossa tecnologia <span class="text-brand-orange">facilita a sua vida:</span>
+            </h2>
             <p>
-                Sabemos que o mundo digital pode gerar dúvidas, mas ao adotar o aplicativo PetLojas, nunca estará sozinho nessa jornada. Terá à sua total disposição um especialista em software e um especialista em marketing focado em negócios locais. Seja para tirar uma dúvida simples sobre como cadastrar um novo pacote de banho e tosquia, ou para entender a melhor forma de divulgar a sua loja na internet, a nossa equipa estará sempre pronta a ajudar. O nosso objetivo principal é garantir que o seu projeto seja um verdadeiro sucesso e traga retorno real.
+                O grande diferencial do nosso sistema é a união da extrema simplicidade com a ausência de taxas de intermediação. A sua loja terá um baixo custo de manutenção porque otimizamos o momento crucial: a venda.
+            </p>
+            <p>
+                O seu cliente navega por uma vitrine digital onde você pode cadastrar <strong>infinitos produtos e serviços</strong> (desde banho e tosa até rações premium). Ele escolhe o que deseja e o pedido chega detalhado <strong>diretamente no seu WhatsApp</strong>, com uma mensagem pré-programada. Sem comissões abusivas de plataformas terceiras, você garante um contato direto, humanizado e foca no fechamento imediato da venda.
             </p>
         </section>
 
-        <section id="planos" class="mb-16 p-8 bg-gray-50 border border-gray-200 rounded-xl shadow-sm scroll-mt-24">
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6 text-center">A Escolha do Plano Ideal</h2>
+        <section class="mb-16 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">
+                Você nunca estará sozinho.
+            </h2>
             <p>
-                Pensamos em soluções que acompanham o momento e a necessidade do seu negócio. O <strong>Plano 1</strong> é a porta de entrada ideal: por apenas 99 reais mensais, recebe o aplicativo da loja online completo, o treino detalhado de uso e todo o nosso suporte especializado. É a escolha perfeita para quem quer colocar as mãos à obra e gerir a sua própria vitrine digital.
+                Sabemos que a transição para o digital pode gerar inseguranças. Por isso, ao adotar o aplicativo PetLojas, você terá à sua disposição especialistas em software e em marketing focados exclusivamente em negócios locais. 
             </p>
             <p>
-                Para quem deseja acelerar os resultados sem ter trabalho extra, o <strong>Plano 2</strong> é a solução definitiva. Além de incluir absolutamente tudo o que o Plano 1 oferece, nós assumimos o trabalho pesado. Disponibilizamos uma pessoa dedicada para cadastrar todos os serviços e produtos por si e, o mais importante, um gestor de tráfego pago encarregue de divulgar a sua loja na internet de forma estratégica para atrair clientes reais todos os dias. <em>(Consulte o valor deste plano com o nosso especialista)</em>.
+                Seja para tirar uma dúvida sobre como destacar um produto ou para entender a melhor estratégia para atrair mais clientes na sua região, nossa equipe estará ao seu lado. O nosso compromisso é garantir que o seu sucesso online aconteça de verdade.
             </p>
+        </section>
+
+        <section id="planos" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-brand mb-10">
+                Escolha o plano ideal para <span class="text-brand-orange">escalar suas vendas</span>
+            </h2>
             
-            <div class="mt-8 text-center">
-                <!-- LEMBRE-SE DE COLOCAR O SEU NÚMERO DE WHATSAPP AQUI ABAIXO -->
-                <a href="https://wa.me/55SEUNUMEROAQUI" target="_blank" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
-                    Falar com um Especialista no WhatsApp
-                </a>
-            </div>
-        </section>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                
+                <div class="pricing-card bg-white border border-gray-200 rounded-2xl shadow-lg p-8 flex flex-col relative">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Essencial</h3>
+                    <p class="text-gray-500 text-sm mb-6">A porta de entrada ideal para quem quer gerenciar a própria vitrine digital.</p>
+                    <div class="text-4xl font-black text-brand mb-6">
+                        R$ 99<span class="text-lg font-medium text-gray-500">/mês</span>
+                    </div>
+                    
+                    <ul class="mb-8 space-y-4 flex-grow">
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-gray-600">Aplicativo de Loja Online Completo</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-gray-600">Subdomínio Grátis (Vercel)</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-gray-600">Produtos e Serviços Ilimitados</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-gray-600">Treinamento e Suporte Especializado</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="https://wa.me/55SEUNUMEROAQUI" target="_blank" class="w-full block text-center bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition duration-300">
+                        Assinar Essencial
+                    </a>
+                </div>
 
-        <section>
-            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">O Acelerador de Lançamento (Setup Facultativo)</h2>
-            <p>
-                Sabemos que o seu tempo é valioso e focado na gestão do seu negócio. Por isso, oferecemos uma taxa de setup opcional de apenas 100 reais. Se não quiser gastar o seu tempo a cadastrar o seu stock inicial para inaugurar a plataforma, a nossa equipa encarrega-se da inserção profissional dos primeiros 60 produtos e serviços. Dessa forma, a sua loja online é inaugurada muito mais rápido, sem esforço da sua parte, e já começa a faturar nos primeiros dias.
-            </p>
+                <div class="pricing-card bg-white border-2 border-brand-orange rounded-2xl shadow-xl p-8 flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-bl-lg">MAIS ESCOLHIDO</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Full Service</h3>
+                    <p class="text-gray-500 text-sm mb-6">Para quem deseja acelerar resultados sem ter trabalho extra.</p>
+                    <div class="text-3xl font-black text-brand mb-6 mt-1">
+                        Sob Consulta
+                    </div>
+                    
+                    <ul class="mb-8 space-y-4 flex-grow">
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-brand-orange mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-gray-800 font-semibold">Tudo do Plano Essencial, mais:</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-gray-600">Mão de obra: Nós cadastramos os produtos para você</span>
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-6 h-6 text-green-500 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            <span class="text-gray-600">Gestor de Tráfego Dedicado para divulgar sua loja na internet</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="https://wa.me/55SEUNUMEROAQUI" target="_blank" class="w-full block text-center bg-brand-orange hover:bg-orange-500 text-white font-bold py-3 rounded-lg transition duration-300">
+                        Falar com Especialista
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-brand-lightbg border border-gray-200 rounded-lg p-6 max-w-3xl mx-auto text-center">
+                <span class="inline-block bg-gray-200 text-gray-700 text-xs font-bold px-3 py-1 rounded-full mb-3">OPCIONAL ACELERADOR</span>
+                <h4 class="font-bold text-gray-800 mb-2">Setup de Lançamento (R$ 100)</h4>
+                <p class="text-sm text-gray-600 mb-0">Seu tempo é focado em gerenciar o negócio. Se quiser, nossa equipe inaugura a plataforma cadastrando profissionalmente os seus primeiros 60 produtos e serviços para você começar a faturar imediatamente.</p>
+            </div>
+
         </section>
 
     </main>
 
-    <!-- Rodapé -->
-    <footer class="bg-brand text-gray-300 py-8 text-center mt-12">
-        <div class="max-w-4xl mx-auto px-6">
-            <p>&copy; 2026 - PetLojas. O endereço da sua loja na internet.</p>
+    <footer class="bg-gray-900 text-gray-400 py-10 border-t-4 border-brand-orange">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div class="mb-4 md:mb-0">
+                <p class="text-white font-bold text-lg mb-1">PetLojas</p>
+                <p class="text-sm">O endereço da sua loja na internet.</p>
+                <p class="text-xs mt-2 text-gray-500">&copy; 2026 - Todos os direitos reservados.</p>
+            </div>
+            
+            <div class="text-sm border-t md:border-t-0 md:border-l border-gray-700 pt-4 md:pt-0 md:pl-6">
+                <p class="text-gray-500 mb-1">Criação e Desenvolvimento por:</p>
+                <a href="#" class="text-brand-orange font-bold hover:text-white transition">Gv Conecta</a>
+                <p class="text-xs text-gray-400">Marketing para negócios locais</p>
+            </div>
         </div>
     </footer>
 
