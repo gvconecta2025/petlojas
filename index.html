@@ -42,6 +42,15 @@
             transition: all 0.3s ease;
         }
     </style>
+    <script>
+        // Forçar a página a abrir sempre no topo ao recarregar
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
 </head>
 <body class="bg-gray-50 antialiased">
 
@@ -53,6 +62,7 @@
                 <a href="#inicio" class="text-gray-600 hover:text-brand transition">Início</a>
                 <a href="#vantagens" class="text-gray-600 hover:text-brand transition">Vantagens</a>
                 <a href="#planos" class="text-brand-orange hover:text-brand transition font-bold">Ver Planos</a>
+                <a href="#faq" class="text-gray-600 hover:text-brand transition">FAQ</a>
             </div>
         </div>
     </nav>
@@ -74,7 +84,7 @@
             <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto">
                 Transforme seu negócio local em uma máquina de vendas com o seu aplicativo próprio. Nós cuidamos da tecnologia, você foca em faturar.
             </p>
-            <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20da%20Gv%20Conecta%21%20Estava%20navegando%20no%20site%20PetLojas%20e%20fiquei%20muito%20interessado%20em%20ter%20uma%20loja%20online%20oficial%20para%20o%20meu%20petshop.%20Podem%20me%20ajudar%20com%20mais%20informa%C3%A7%C3%B5es%3F" target="_blank" class="inline-block bg-brand hover:bg-brand-dark text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
+            <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20vim%20pelo%20in%C3%ADcio%20do%20site%20da%20PetLojas%20e%20quero%20criar%20minha%20loja%20online.%20Como%20funciona%3F" target="_blank" class="inline-block bg-brand hover:bg-brand-dark text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
                 Criar Minha Loja Agora
             </a>
         </div>
@@ -160,7 +170,7 @@
                         </li>
                     </ul>
                     
-                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20da%20Gv%20Conecta%21%20Estava%20navegando%20no%20site%20PetLojas%20e%20fiquei%20muito%20interessado%20no%20PLANO%20ESSENCIAL%20para%20o%20meu%20petshop.%20Podem%20me%20ajudar%20com%20mais%20informa%C3%A7%C3%B5es%3F" target="_blank" class="w-full block text-center bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition duration-300">
+                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20Gv%20Conecta%21%20Quero%20assinar%20o%20PLANO%20ESSENCIAL%20%28R%24%2099%2Fm%C3%AAs%29%20da%20PetLojas.%20Como%20fa%C3%A7o%20para%20come%C3%A7ar%3F" target="_blank" class="w-full block text-center bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition duration-300">
                         Assinar Essencial
                     </a>
                 </div>
@@ -168,7 +178,7 @@
                 <!-- Card Plano 2 -->
                 <div class="pricing-card bg-white border-2 border-brand-orange rounded-2xl shadow-xl p-8 flex flex-col relative overflow-hidden">
                     <div class="absolute top-0 right-0 bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-bl-lg">MAIS COMPLETO</div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Full Service</h3>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Completo</h3>
                     <p class="text-gray-500 text-sm mb-6">Para quem deseja escalar os resultados sem ter trabalho manual.</p>
                     <div class="text-3xl font-black text-brand mb-6 mt-1">
                         Sob Consulta
@@ -189,7 +199,7 @@
                         </li>
                     </ul>
                     
-                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20da%20Gv%20Conecta%21%20Estava%20navegando%20no%20site%20PetLojas%20e%20fiquei%20muito%20interessado%20no%20PLANO%20FULL%20SERVICE%20para%20o%20meu%20petshop.%20Podem%20me%20ajudar%20com%20mais%20informa%C3%A7%C3%B5es%3F" target="_blank" class="w-full block text-center bg-brand-orange hover:bg-orange-500 text-white font-bold py-3 rounded-lg transition duration-300">
+                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20Gv%20Conecta%21%20Quero%20saber%20mais%20sobre%20o%20PLANO%20COMPLETO%20da%20PetLojas%2C%20com%20tr%C3%A1fego%20e%20gest%C3%A3o%20de%20cat%C3%A1logo." target="_blank" class="w-full block text-center bg-brand-orange hover:bg-orange-500 text-white font-bold py-3 rounded-lg transition duration-300">
                         Falar com Especialista
                     </a>
                 </div>
@@ -206,9 +216,112 @@
             <div class="mt-8 bg-brand-lightbg border border-gray-200 rounded-lg p-6 max-w-3xl mx-auto text-center">
                 <span class="inline-block bg-gray-200 text-gray-700 text-xs font-bold px-3 py-1 rounded-full mb-3">OPCIONAL</span>
                 <h4 class="font-bold text-gray-800 mb-2">Acelerador de Lançamento: 60 produtos por R$ 100,00 <span class="text-brand-orange">(Pagamento Único)</span></h4>
-                <p class="text-sm text-gray-600 mb-0">Seu tempo é focado em gerenciar o negócio. Se quiser, nossa equipe inaugura a plataforma cadastrando profissionalmente os seus primeiros 60 produtos e serviços por uma taxa única, para você começar a faturar imediatamente.</p>
+                <p class="text-sm text-gray-600 mb-4">Seu tempo é focado em gerenciar o negócio. Se quiser, nossa equipe inaugura a plataforma cadastrando profissionalmente os seus primeiros 60 produtos e serviços por uma taxa única, para você começar a faturar imediatamente.</p>
+                <a href="https://wa.me/5533999333644?text=Ol%C3%A1%21%20Vou%20querer%20a%20PetLojas%20e%20tenho%20interesse%20em%20adicionar%20o%20ACELERADOR%20DE%20LAN%C3%87AMENTO%20%28R%24%20100%29%20para%20voc%C3%AAs%20cadastrarem%20meus%2060%20produtos." target="_blank" class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-md transition duration-300 text-sm">
+                    Quero incluir o Acelerador
+                </a>
             </div>
 
+        </section>
+
+        <!-- CTA Final e FAQ -->
+        <section id="faq" class="mb-16 border-t border-gray-200 pt-16 scroll-mt-24">
+            
+            <!-- Frase de Impacto -->
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black text-brand mb-4">
+                    Não fique para trás e <span class="text-brand-orange">venda para toda a cidade!</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                    A digitalização do seu petshop já não é mais o futuro, é o presente. Garanta o seu espaço online antes que a concorrência o faça.
+                </p>
+            </div>
+
+            <!-- Início Perguntas Frequentes -->
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-brand mb-10">
+                Perguntas <span class="text-brand-orange">Frequentes</span>
+            </h2>
+            
+            <div class="max-w-3xl mx-auto space-y-4">
+                
+                <!-- FAQ 1 -->
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
+                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
+                        Preciso entender de tecnologia para usar a loja?
+                        <span class="transition group-open:rotate-180 text-brand">
+                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-gray-600 mt-4 leading-relaxed">Absolutamente não. A plataforma foi criada para ser simples e muito intuitiva. Além disso, no Plano Essencial você recebe treinamento completo, e no Plano Completo nós até cadastramos os produtos e serviços para você!</p>
+                </details>
+
+                <!-- FAQ 2 -->
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
+                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
+                        Como recebo o dinheiro das vendas?
+                        <span class="transition group-open:rotate-180 text-brand">
+                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-gray-600 mt-4 leading-relaxed">Os pedidos são enviados detalhadamente para o seu WhatsApp. Isso significa que você negocia e recebe o pagamento diretamente do seu cliente (via Pix, cartão, link de pagamento ou no ato da entrega), sem o seu dinheiro ficar retido em plataformas.</p>
+                </details>
+
+                <!-- FAQ 3 -->
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
+                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
+                        Tem alguma taxa sobre as vendas que eu fizer?
+                        <span class="transition group-open:rotate-180 text-brand">
+                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-gray-600 mt-4 leading-relaxed">Zero taxas! Diferente de outros aplicativos de entrega conhecidos, nós não cobramos nenhuma comissão ou percentagem sobre as suas vendas. Todo o lucro gerado na loja é 100% seu.</p>
+                </details>
+
+                <!-- FAQ 4 -->
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
+                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
+                        Consigo vender serviços, como banho e tosa?
+                        <span class="transition group-open:rotate-180 text-brand">
+                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-gray-600 mt-4 leading-relaxed">Sim! Você tem total liberdade na sua vitrine para cadastrar tanto produtos físicos (rações, roupinhas, medicamentos) quanto serviços agendáveis (banho, tosa, creche, consultas veterinárias).</p>
+                </details>
+
+                <!-- FAQ 5 -->
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
+                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
+                        Posso usar o domínio próprio do meu petshop?
+                        <span class="transition group-open:rotate-180 text-brand">
+                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-gray-600 mt-4 leading-relaxed">Com certeza. Nós já fornecemos um subdomínio seguro e de alta velocidade gratuitamente, mas se você já tem ou pretende adquirir o seu próprio domínio (ex: www.seupetshop.com.br), basta nos avisar que fazemos a conexão.</p>
+                </details>
+
+                <!-- FAQ 6 -->
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
+                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
+                        Existe algum contrato de fidelidade?
+                        <span class="transition group-open:rotate-180 text-brand">
+                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-gray-600 mt-4 leading-relaxed">Não prendemos ninguém por contratos longos. A assinatura é mensal e antecipada. Se algum dia você decidir que não quer mais usar a plataforma, basta cancelar a renovação sem multas ou dores de cabeça.</p>
+                </details>
+
+                <!-- FAQ 7 -->
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm hover:border-brand-orange transition">
+                    <summary class="font-bold text-gray-800 outline-none list-none flex justify-between items-center text-lg">
+                        Como funciona o Acelerador de Lançamento?
+                        <span class="transition group-open:rotate-180 text-brand">
+                            <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
+                        </span>
+                    </summary>
+                    <p class="text-gray-600 mt-4 leading-relaxed">É um serviço opcional de taxa única (R$ 100,00). Em vez de você gastar o seu valioso tempo a cadastrar o estoque inicial para inaugurar o site, a nossa equipa insere os 60 produtos e serviços principais da sua loja. O seu site já nasce pronto a vender!</p>
+                </details>
+
+            </div>
         </section>
 
     </main>
