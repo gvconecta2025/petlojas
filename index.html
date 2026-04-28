@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Petlojas - A Sua Loja Online</title>
+    <title>PetLojas - A Sua Loja Online</title>
     
     <!-- Configuração do Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,10 +12,10 @@
             theme: {
                 extend: {
                     colors: {
-                        // ALTERE ESTA COR: Aqui você muda a cor principal para a cor da marca do seu cliente
                         brand: {
-                            DEFAULT: '#2563EB', // Azul padrão, mude o Hexadecimal aqui
-                            dark: '#1D4ED8'
+                            DEFAULT: '#0F2C59', // Azul escuro do logo
+                            dark: '#0a1d3b',
+                            orange: '#FF7A59' // Laranja/Coral do logo
                         }
                     }
                 }
@@ -45,15 +45,11 @@
     <!-- Barra de Navegação Fixo (One Page) -->
     <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="font-bold text-brand text-2xl tracking-tight">Pet<span class="text-orange-500">lojas</span></div>
+            <div class="font-bold text-brand text-2xl tracking-tight font-black">Pet<span class="text-brand-orange">Lojas</span></div>
             <div class="hidden md:flex space-x-6 font-medium">
                 <a href="#inicio" class="text-gray-600 hover:text-brand transition">Início</a>
                 <a href="#como-funciona" class="text-gray-600 hover:text-brand transition">Como Funciona</a>
                 <a href="#planos" class="text-gray-600 hover:text-brand transition">Planos</a>
-            </div>
-            <!-- Botão Mobile Opcional (apenas visual para o layout manter-se limpo) -->
-            <div class="md:hidden text-brand font-bold">
-                Menu
             </div>
         </div>
     </nav>
@@ -61,12 +57,15 @@
     <!-- Cabeçalho / Hero Section -->
     <header id="inicio" class="bg-white border-b border-gray-200 scroll-mt-20">
         <div class="max-w-4xl mx-auto px-6 py-12 text-center">
-            <!-- LOGO DO CLIENTE -->
+            
+            <!-- LOGOTIPO CARREGADO DA PASTA RAIZ -->
             <div class="mb-8 flex justify-center">
-                <div class="w-64 h-auto overflow-hidden">
-                    <img src="http://googleusercontent.com/image_generation_content/0" alt="Logotipo Petlojas" class="w-full h-auto rounded">
+                <!-- A imagem petlojas.png sendo chamada aqui -->
+                <div class="w-full max-w-[400px] flex items-center justify-center">
+                    <img src="petlojas.png" alt="Logotipo PetLojas" class="w-full h-auto object-contain drop-shadow-sm">
                 </div>
             </div>
+            <!-- FIM DO LOGOTIPO -->
 
             <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Sempre quis que o seu petshop vendesse mais, atendendo a toda a cidade?
@@ -74,16 +73,15 @@
             <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto">
                 Então é hora de criar uma loja online connosco por um investimento que cabe no seu bolso. Oferecemos loja online, tráfego pago e suporte para que o seu sucesso aconteça.
             </p>
-            <a href="#planos" class="inline-block bg-brand hover:bg-brand-dark text-white font-bold py-4 px-10 rounded text-lg transition duration-300">
+            <a href="#planos" class="inline-block bg-brand hover:bg-brand-dark text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
                 Ver os Planos Disponíveis
             </a>
         </div>
     </header>
 
-    <!-- Conteúdo Principal - Em Tópicos Corridos -->
+    <!-- Conteúdo Principal -->
     <main class="max-w-4xl mx-auto px-6 py-16 bg-white shadow-sm my-8 rounded-lg border border-gray-100">
 
-        <!-- Tópico 1 -->
         <section class="mb-16">
             <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">A Transformação do Seu Petshop</h2>
             <p>
@@ -91,7 +89,6 @@
             </p>
         </section>
 
-        <!-- Tópico 2 -->
         <section id="como-funciona" class="mb-16 scroll-mt-24">
             <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">Como a Loja Funciona na Prática</h2>
             <p>
@@ -99,16 +96,14 @@
             </p>
         </section>
 
-        <!-- Tópico 3 -->
         <section class="mb-16">
             <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">Suporte e Acompanhamento Especializado</h2>
             <p>
-                Sabemos que o mundo digital pode gerar dúvidas, mas ao adotar o aplicativo Petlojas, nunca estará sozinho nessa jornada. Terá à sua total disposição um especialista em software e um especialista em marketing focado em negócios locais. Seja para tirar uma dúvida simples sobre como cadastrar um novo pacote de banho e tosquia, ou para entender a melhor forma de divulgar a sua loja na internet, a nossa equipa estará sempre pronta a ajudar. O nosso objetivo principal é garantir que o seu projeto seja um verdadeiro sucesso e traga retorno real.
+                Sabemos que o mundo digital pode gerar dúvidas, mas ao adotar o aplicativo PetLojas, nunca estará sozinho nessa jornada. Terá à sua total disposição um especialista em software e um especialista em marketing focado em negócios locais. Seja para tirar uma dúvida simples sobre como cadastrar um novo pacote de banho e tosquia, ou para entender a melhor forma de divulgar a sua loja na internet, a nossa equipa estará sempre pronta a ajudar. O nosso objetivo principal é garantir que o seu projeto seja um verdadeiro sucesso e traga retorno real.
             </p>
         </section>
 
-        <!-- Tópico 4 -->
-        <section id="planos" class="mb-16 p-8 bg-gray-50 border border-gray-200 rounded-lg scroll-mt-24">
+        <section id="planos" class="mb-16 p-8 bg-gray-50 border border-gray-200 rounded-xl shadow-sm scroll-mt-24">
             <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6 text-center">A Escolha do Plano Ideal</h2>
             <p>
                 Pensamos em soluções que acompanham o momento e a necessidade do seu negócio. O <strong>Plano 1</strong> é a porta de entrada ideal: por apenas 99 reais mensais, recebe o aplicativo da loja online completo, o treino detalhado de uso e todo o nosso suporte especializado. É a escolha perfeita para quem quer colocar as mãos à obra e gerir a sua própria vitrine digital.
@@ -118,13 +113,13 @@
             </p>
             
             <div class="mt-8 text-center">
-                <a href="https://wa.me/SEUNUMERODEWHATSAPPAQUI" target="_blank" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-10 rounded text-lg transition duration-300">
+                <!-- LEMBRE-SE DE COLOCAR O SEU NÚMERO DE WHATSAPP AQUI ABAIXO -->
+                <a href="https://wa.me/55SEUNUMEROAQUI" target="_blank" class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
                     Falar com um Especialista no WhatsApp
                 </a>
             </div>
         </section>
 
-        <!-- Tópico 5 -->
         <section>
             <h2 class="text-2xl md:text-3xl font-bold text-brand mb-4">O Acelerador de Lançamento (Setup Facultativo)</h2>
             <p>
@@ -135,9 +130,9 @@
     </main>
 
     <!-- Rodapé -->
-    <footer class="bg-gray-900 text-gray-400 py-8 text-center">
+    <footer class="bg-brand text-gray-300 py-8 text-center mt-12">
         <div class="max-w-4xl mx-auto px-6">
-            <p>&copy; 2026 - Petlojas. O endereço da sua loja na internet.</p>
+            <p>&copy; 2026 - PetLojas. O endereço da sua loja na internet.</p>
         </div>
     </footer>
 
