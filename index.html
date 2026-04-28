@@ -1,50 +1,282 @@
-<section id="demonstracao" class="mb-16 bg-white py-12 border-y border-gray-100 scroll-mt-24">
-            <div class="max-w-4xl mx-auto px-6 mb-6">
-                <h2 class="text-2xl md:text-3xl font-bold text-brand">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetLojas - O Endereço Oficial do Seu Petshop na Internet</title>
+    
+    <!-- Configuração do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#3B5B85', // Azul moderno
+                            dark: '#264060',
+                            orange: '#F29C5A', // Coral Oficial
+                            lightbg: '#F9FAFB'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.8;
+            color: #333333;
+        }
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+        }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        
+        /* Estilo CSS embutido para ocultar a barra de scroll no carrossel */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <script>
+        // Forçar a página a abrir sempre no topo ao recarregar
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        }
+        window.addEventListener('load', function() {
+            window.scrollTo(0, 0);
+        });
+    </script>
+</head>
+<body class="bg-gray-50 antialiased">
+
+    <!-- Barra de Navegação -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-4xl mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- LOGO NA BARRA DE NAVEGAÇÃO -->
+            <a href="#inicio" class="flex items-center">
+                <img src="petlojas.png" alt="Logo PetLojas" class="h-10 w-auto object-contain">
+            </a>
+            
+            <div class="hidden md:flex space-x-6 font-medium">
+                <a href="#inicio" class="text-gray-600 hover:text-brand transition">Início</a>
+                <a href="#vantagens" class="text-gray-600 hover:text-brand transition">Vantagens</a>
+                <a href="#demonstracao" class="text-gray-600 hover:text-brand transition">O Aplicativo</a>
+                <a href="#planos" class="text-brand-orange hover:text-brand transition font-bold">Ver Planos</a>
+                <a href="#faq" class="text-gray-600 hover:text-brand transition">FAQ</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cabeçalho (Hero Section) -->
+    <header id="inicio" class="bg-white border-b border-gray-200 scroll-mt-20">
+        <div class="max-w-4xl mx-auto px-6 py-12 text-center">
+            
+            <!-- LOGO NO CABEÇALHO (BANNER PRINCIPAL) -->
+            <div class="mb-8 flex justify-center">
+                <div class="w-full max-w-[320px] flex items-center justify-center">
+                    <img src="petlojas.png" alt="Logotipo PetLojas" class="w-full h-auto object-contain drop-shadow-sm">
+                </div>
+            </div>
+
+            <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                Sempre quis que o seu petshop vendesse mais, <span class="text-brand">atendendo a toda a cidade?</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto">
+                Transforme seu negócio local em uma máquina de vendas com o seu aplicativo próprio. Nós cuidamos da tecnologia, você foca em faturar.
+            </p>
+            <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20vim%20pelo%20in%C3%ADcio%20do%20site%20da%20PetLojas%20e%20quero%20criar%20minha%20loja%20online.%20Como%20funciona%3F" target="_blank" class="inline-block bg-brand hover:bg-brand-dark text-white font-bold py-4 px-10 rounded text-lg transition duration-300 shadow-md">
+                Criar Minha Loja Agora
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-16 my-8">
+
+        <!-- Secção Vantagens -->
+        <section id="vantagens" class="mb-16 bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6">
+                Muito mais que um catálogo. <span class="text-brand-orange">O seu endereço oficial na internet.</span>
+            </h2>
+            <p>
+                Expandir o atendimento para toda a cidade e profissionalizar as suas vendas não precisa ser um processo caro ou complicado. Com a PetLojas, você recebe uma loja online completa, personalizada com a identidade visual da sua empresa.
+            </p>
+            <p>
+                <strong>E o melhor:</strong> Garantimos um endereço de altíssima velocidade na internet gratuitamente através de um subdomínio seguro (tecnologia Vercel). Caso prefira construir ainda mais autoridade, você tem total flexibilidade para adquirir e conectar o seu domínio próprio e exclusivo (ex: <em>www.seupetshop.com.br</em>). A sua marca, as suas regras.
+            </p>
+        </section>
+
+        <!-- Secção Como Facilita a Vida -->
+        <section class="mb-16">
+            <h2 class="text-2xl md:text-3xl font-bold text-brand mb-6">
+                Como a nossa tecnologia <span class="text-brand-orange">facilita a sua vida:</span>
+            </h2>
+            <p>
+                O grande diferencial do nosso sistema é a união da extrema simplicidade com a ausência de taxas de intermediação. A sua loja terá um baixo custo de manutenção porque otimizamos o momento crucial: a venda.
+            </p>
+            <p>
+                Na sua vitrine digital, você tem liberdade total! É possível postar <strong>promoções, infinitos produtos e serviços</strong>, além de <strong>conteúdo de valor em imagens e vídeos</strong>. O cliente escolhe o que deseja e o pedido chega detalhado <strong>diretamente no seu WhatsApp</strong>.
+            </p>
+            <p class="bg-blue-50 border-l-4 border-brand p-4 rounded text-gray-700">
+                <strong>Notificações Inteligentes:</strong> Para garantir fidelização, seus clientes serão notificados via WhatsApp das novidades e ofertas lançadas na sua loja!
+            </p>
+        </section>
+
+        <!-- NOVA SECÇÃO: DEMONSTRAÇÃO DO APP (Estilo Carrossel) -->
+        <section id="demonstracao" class="mb-16 bg-white py-12 border-y border-gray-100 scroll-mt-24">
+            <div class="mb-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-brand">
                     Veja o aplicativo <span class="text-brand-orange">na prática</span>
                 </h2>
-                <p class="text-gray-600 mt-2">
-                    Deslize para ver como os seus clientes vão navegar, escolher produtos e interagir com a sua nova vitrine digital.
+                <p class="text-gray-600 mt-2 max-w-2xl mx-auto">
+                    Deslize horizontalmente para ver como os seus clientes vão navegar, escolher produtos e interagir com a sua nova vitrine digital.
                 </p>
             </div>
 
-            <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 px-6 pb-8 max-w-5xl mx-auto hide-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
+            <!-- Contentor do Carrossel com Scroll Horizontal -->
+            <!-- Atenção: Coloque os ficheiros video1.mp4, img1.jpg, img2.jpg e img3.jpg na pasta raiz! -->
+            <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 px-4 pb-8 max-w-[100vw] hide-scrollbar" style="-ms-overflow-style: none; scrollbar-width: none;">
                 
-                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-gray-900 rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                <!-- Item 1: VÍDEO -->
+                <div class="snap-center shrink-0 w-[280px] h-[580px] bg-gray-900 rounded-[2.5rem] border-[8px] border-gray-800 shadow-xl overflow-hidden relative ml-4 md:ml-0">
+                    <!-- O vídeo irá tocar automaticamente, em loop e sem som -->
                     <video src="video1.mp4" autoplay loop muted playsinline class="w-full h-full object-cover"></video>
-                    <div class="absolute top-4 right-4 bg-black/50 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm">
-                        ▶ Vídeo
+                    <!-- Etiqueta a avisar que é vídeo -->
+                    <div class="absolute top-4 right-4 bg-black/60 text-white text-xs px-3 py-1.5 rounded-full backdrop-blur-sm font-semibold flex items-center">
+                        <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4l12 6-12 6z"/></svg> Vídeo
                     </div>
                 </div>
 
-                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-white rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                <!-- Item 2: IMAGEM 1 -->
+                <div class="snap-center shrink-0 w-[280px] h-[580px] bg-white rounded-[2.5rem] border-[8px] border-gray-800 shadow-xl overflow-hidden relative">
                     <img src="img1.jpg" alt="Ecrã do Aplicativo 1" class="w-full h-full object-cover object-top">
                 </div>
 
-                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-white rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                <!-- Item 3: IMAGEM 2 -->
+                <div class="snap-center shrink-0 w-[280px] h-[580px] bg-white rounded-[2.5rem] border-[8px] border-gray-800 shadow-xl overflow-hidden relative">
                     <img src="img2.jpg" alt="Ecrã do Aplicativo 2" class="w-full h-full object-cover object-top">
                 </div>
 
-                <div class="snap-center shrink-0 w-[260px] md:w-[300px] h-[550px] md:h-[600px] bg-white rounded-[2rem] border-[6px] border-gray-800 shadow-xl overflow-hidden relative">
+                <!-- Item 4: IMAGEM 3 -->
+                <div class="snap-center shrink-0 w-[280px] h-[580px] bg-white rounded-[2.5rem] border-[8px] border-gray-800 shadow-xl overflow-hidden relative mr-4 md:mr-0">
                     <img src="img3.jpg" alt="Ecrã do Aplicativo 3" class="w-full h-full object-cover object-top">
                 </div>
                 
-                <div class="snap-center shrink-0 w-2 md:w-6"></div>
+            </div>
+            
+            <div class="text-center mt-2 text-sm text-gray-400 flex justify-center items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Deslize para o lado
+            </div>
+        </section>
+        <!-- FIM DA SECÇÃO DE DEMONSTRAÇÃO -->
+
+        <!-- Secção Planos -->
+        <section id="planos" class="mb-16 scroll-mt-24">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-brand mb-10">
+                Escolha o plano ideal para <span class="text-brand-orange">escalar suas vendas</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                
+                <!-- Card Plano Essencial -->
+                <div class="pricing-card bg-white border border-gray-200 rounded-2xl shadow-lg p-8 flex flex-col">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Essencial</h3>
+                    <p class="text-gray-500 text-sm mb-6">A porta de entrada ideal para gerenciar sua própria vitrine digital.</p>
+                    <div class="text-4xl font-black text-brand mb-6">
+                        R$ 99<span class="text-lg font-medium text-gray-500">/mês</span>
+                    </div>
+                    
+                    <ul class="mb-8 space-y-4 flex-grow text-sm">
+                        <li class="flex items-start">✓ Aplicativo de Loja Online Completo</li>
+                        <li class="flex items-start">✓ Subdomínio Grátis ou Domínio Próprio</li>
+                        <li class="flex items-start">✓ Vitrine com Imagens, Vídeos e Notificações</li>
+                        <li class="flex items-start">✓ Treinamento e Suporte Especializado</li>
+                    </ul>
+                    
+                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20Gv%20Conecta%21%20Quero%20assinar%20o%20PLANO%20ESSENCIAL%20%28R%24%2099%2Fm%C3%AAs%29%20da%20PetLojas.%20Como%20fa%C3%A7o%20para%20come%C3%A7ar%3F" target="_blank" class="w-full block text-center bg-brand hover:bg-brand-dark text-white font-bold py-3 rounded-lg transition duration-300">
+                        Assinar Essencial
+                    </a>
+                </div>
+
+                <!-- Card Plano Completo -->
+                <div class="pricing-card bg-white border-2 border-brand-orange rounded-2xl shadow-xl p-8 flex flex-col relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-brand-orange text-white text-xs font-bold px-3 py-1 rounded-bl-lg">MAIS COMPLETO</div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plano Completo</h3>
+                    <p class="text-gray-500 text-sm mb-6">Para quem deseja escalar resultados sem trabalho manual.</p>
+                    <div class="text-3xl font-black text-brand mb-6 mt-1">Sob Consulta</div>
+                    
+                    <ul class="mb-8 space-y-4 flex-grow text-sm">
+                        <li class="font-semibold text-brand-orange">Tudo do Plano Essencial, mais:</li>
+                        <li class="flex items-start">✓ <strong>Tráfego Pago:</strong> Mão de obra para anúncios</li>
+                        <li class="flex items-start">✓ <strong>Gestão de Catálogo:</strong> Nós cadastramos tudo</li>
+                    </ul>
+                    
+                    <a href="https://wa.me/5533999333644?text=Ol%C3%A1%2C%20equipe%20Gv%20Conecta%21%20Quero%20saber%20mais%20sobre%20o%20PLANO%20COMPLETO%20da%20PetLojas%2C%20com%20tr%C3%A1fego%20e%20gest%C3%A3o%20de%20cat%C3%A1logo." target="_blank" class="w-full block text-center bg-brand-orange hover:bg-orange-500 text-white font-bold py-3 rounded-lg transition duration-300">
+                        Falar com Especialista
+                    </a>
+                </div>
             </div>
 
-            <style>
-                .hide-scrollbar::-webkit-scrollbar {
-                    display: none;
-                }
-            </style>
+            <!-- Condições -->
+            <div class="mt-8 text-center bg-green-50 text-green-800 py-3 px-4 rounded-lg max-w-3xl mx-auto border border-green-100">
+                <p class="text-sm font-medium">
+                    ✨ <strong>Isenção de Taxas:</strong> Implantação Grátis! Mensalidades antecipadas e <strong>sem fidelidade</strong>.
+                </p>
+            </div>
+
+            <!-- Acelerador -->
+            <div class="mt-8 bg-brand-lightbg border border-gray-200 rounded-lg p-6 max-w-3xl mx-auto text-center">
+                <h4 class="font-bold text-gray-800 mb-2">Acelerador de Lançamento: 60 produtos por R$ 100,00</h4>
+                <p class="text-sm text-gray-600 mb-4">Inaugure sua plataforma com 60 itens cadastrados profissionalmente por nossa equipe.</p>
+                <a href="https://wa.me/5533999333644?text=Ol%C3%A1%21%20Vou%20querer%20a%20PetLojas%20e%20tenho%20interesse%20em%20adicionar%20o%20ACELERADOR%20DE%20LAN%C3%87AMENTO." target="_blank" class="inline-block bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-6 rounded-md transition duration-300 text-sm">
+                    Quero o Acelerador
+                </a>
+            </div>
         </section>
-        ```
 
-### O que precisa de fazer:
+        <!-- Secção FAQ -->
+        <section id="faq" class="mb-16 border-t border-gray-200 pt-16 scroll-mt-24">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-black text-brand mb-4">Não fique para trás e <span class="text-brand-orange">venda para toda a cidade!</span></h2>
+            </div>
 
-1. **Os Ficheiros:** Certifique-se de que coloca os seus ficheiros reais (`video1.mp4`, `img1.jpg`, `img2.jpg` e `img3.jpg`) **exatamente na mesma pasta** onde está o ficheiro `index.html` no seu GitHub.
-2. **Atenção às extensões:** No código acima, presumi que as imagens são `.jpg` e o vídeo é `.mp4`. Se as suas imagens estiverem em formato `.png` (por exemplo, `img1.png`), lembre-se de alterar apenas o nome no código onde diz `<img src="img1.jpg"...` para `<img src="img1.png"...`.
-3. O vídeo já está configurado com `autoplay loop muted playsinline`, que é o padrão ouro para páginas de vendas: ele começa a tocar sozinho sem som e repete-se infinitamente, garantindo que funciona mesmo em telemóveis como o iPhone (que bloqueiam vídeos com som automático). 
-4. A moldura `border-[6px] border-gray-800 rounded-[2rem]` cria automaticamente um "falso smartphone" ao redor da imagem/vídeo, dando um aspeto muito profissional.
+            <h2 class="text-3xl font-bold text-center text-brand mb-10">Perguntas Frequentes</h2>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm"><summary class="font-bold text-gray-800 list-none flex justify-between items-center text-lg">Preciso entender de tecnologia? <span class="group-open:rotate-180 text-brand">▼</span></summary><p class="text-gray-600 mt-4">Não. O sistema é intuitivo e oferecemos treinamento completo.</p></details>
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm"><summary class="font-bold text-gray-800 list-none flex justify-between items-center text-lg">Como recebo o dinheiro? <span class="group-open:rotate-180 text-brand">▼</span></summary><p class="text-gray-600 mt-4">Diretamente do cliente via Pix ou cartão, sem intermediários.</p></details>
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm"><summary class="font-bold text-gray-800 list-none flex justify-between items-center text-lg">Tem taxa sobre as vendas? <span class="group-open:rotate-180 text-brand">▼</span></summary><p class="text-gray-600 mt-4">Zero. Você não paga comissões sobre o faturamento.</p></details>
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm"><summary class="font-bold text-gray-800 list-none flex justify-between items-center text-lg">Posso vender serviços? <span class="group-open:rotate-180 text-brand">▼</span></summary><p class="text-gray-600 mt-4">Sim, como banho, tosa e agendamentos veterinários.</p></details>
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm"><summary class="font-bold text-gray-800 list-none flex justify-between items-center text-lg">Posso usar domínio próprio? <span class="group-open:rotate-180 text-brand">▼</span></summary><p class="text-gray-600 mt-4">Sim. Conectamos seu site ao endereço .com.br que desejar.</p></details>
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm"><summary class="font-bold text-gray-800 list-none flex justify-between items-center text-lg">Existe fidelidade? <span class="group-open:rotate-180 text-brand">▼</span></summary><p class="text-gray-600 mt-4">Não. O cancelamento pode ser feito a qualquer momento.</p></details>
+                <details class="bg-white border border-gray-200 rounded-lg p-5 cursor-pointer group shadow-sm"><summary class="font-bold text-gray-800 list-none flex justify-between items-center text-lg">O que é o Acelerador? <span class="group-open:rotate-180 text-brand">▼</span></summary><p class="text-gray-600 mt-4">Nossa equipe cadastra 60 produtos por uma taxa única de R$ 100.</p></details>
+            </div>
+        </section>
 
-Basta colar o código e os seus ficheiros na pasta raiz que o efeito de deslizar no telemóvel ficará perfeito!
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-900 text-gray-400 py-10 border-t-4 border-brand-orange">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+            <div>
+                <p class="text-white font-bold text-lg mb-1">PetLojas</p>
+                <p class="text-xs text-gray-500">&copy; 2026 - Todos os direitos reservados.</p>
+            </div>
+            <div class="text-sm border-t md:border-t-0 md:border-l border-gray-700 pt-4 md:pt-0 md:pl-6">
+                <p class="text-gray-500 mb-1">Criação e Desenvolvimento por:</p>
+                <a href="#" class="text-brand-orange font-bold hover:text-white transition">Gv Conecta</a>
+                <p class="text-xs text-gray-400">Marketing para negócios locais</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
