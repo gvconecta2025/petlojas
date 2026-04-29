@@ -201,19 +201,82 @@
             </div>
         </div>
 
-        <!-- Resumo & Botão -->
-        <div class="bg-gray-900 rounded-2xl shadow-xl border border-gray-800 p-6 text-white sticky bottom-4 z-10">
-            <h3 class="text-lg font-semibold text-gray-300 mb-4 border-b border-gray-700 pb-2">Resumo do Investimento</h3>
-            
-            <div class="flex justify-between items-center mb-2">
-                <span class="text-gray-400">Mensalidade Recorrente:</span>
-                <span class="text-xl font-bold text-emerald-400" id="total-mensal">R$ 99,00</span>
-            </div>
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-gray-400">Taxa Única de Implantação:</span>
-                <span class="text-xl font-bold text-white" id="total-unico">R$ 0,00</span>
-            </div>
+        <!-- Nova Seção: Resumo Financeiro e PIX -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+             <h2 class="text-xl font-semibold mb-6 text-gray-800 flex items-center border-b pb-3 border-gray-100">
+                <i data-lucide="wallet" class="w-6 h-6 mr-2 text-emerald-500"></i> Resumo do Pedido e Pagamento
+            </h2>
 
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Coluna Esquerda: Resumo dos Valores -->
+                <div class="space-y-4">
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Investimento</h3>
+                        
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Mensalidade Selecionada:</span>
+                            <span class="font-medium text-gray-900" id="resumo-mensalidade">R$ 99,00</span>
+                        </div>
+                        
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="text-gray-600">Taxa Única de Setup:</span>
+                            <span class="font-medium text-gray-900" id="resumo-setup">R$ 100,00</span>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-4 border-t border-gray-200">
+                            <span class="text-lg font-bold text-gray-900">Total a Pagar Hoje:</span>
+                            <span class="text-2xl font-bold text-emerald-600" id="resumo-total">R$ 199,00</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl flex items-start">
+                        <i data-lucide="clock" class="w-5 h-5 text-amber-500 mt-0.5 mr-3 flex-shrink-0"></i>
+                        <p class="text-sm text-amber-800">
+                            <strong>Atenção:</strong> Este pagamento tem validade de <strong>4 horas</strong> para garantirmos a sua estrutura e o setup imediato da loja.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Dados do PIX -->
+                <div class="bg-emerald-50 p-5 rounded-xl border border-emerald-100">
+                    <h3 class="font-bold text-emerald-800 mb-4 flex items-center">
+                        <i data-lucide="qr-code" class="w-5 h-5 mr-2"></i> Pague via PIX
+                    </h3>
+
+                    <div class="space-y-3 mb-4">
+                        <div>
+                            <span class="block text-xs text-emerald-600 font-semibold mb-1">Chave PIX (E-mail):</span>
+                            <div class="flex">
+                                <input type="text" id="chave-pix" value="pixpetlojas@gmail.com" readonly
+                                    class="w-full bg-white border border-emerald-200 rounded-l-lg px-3 py-2 text-sm text-gray-800 outline-none">
+                                <button onclick="copiarPix()" id="btn-copiar"
+                                    class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-2 rounded-r-lg text-sm font-medium transition-colors flex items-center">
+                                    <i data-lucide="copy" class="w-4 h-4 mr-1"></i> Copiar
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="text-sm bg-white p-3 rounded-lg border border-emerald-100">
+                            <p class="mb-1"><span class="text-gray-500">Nome:</span> <strong class="text-gray-800">Giselle Costa Santiago Magalhães</strong></p>
+                            <p><span class="text-gray-500">Banco:</span> <strong class="text-gray-800">Banco Neon</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="text-xs text-emerald-700">
+                        <p class="font-bold mb-1">Passo a Passo Rápido:</p>
+                        <ol class="list-decimal pl-4 space-y-1">
+                            <li>Abra o app do seu banco.</li>
+                            <li>Selecione PIX e use a chave e-mail acima.</li>
+                            <li>Confira os dados de Giselle (Banco Neon) e confirme o valor total.</li>
+                            <li><strong>Envie o comprovante no WhatsApp logo após finalizar o pedido abaixo.</strong></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botão de Finalização -->
+        <div class="bg-gray-900 rounded-2xl shadow-xl border border-gray-800 p-6 text-white sticky bottom-4 z-10">
             <!-- Caixa de erro -->
             <div id="error-msg" class="hidden mb-4 p-3 bg-red-500/10 border border-red-500/50 rounded-lg text-red-200 text-sm text-center">
                 Por favor, preencha todos os dados de cadastro e aceite os Termos de Uso.
@@ -230,10 +293,10 @@
             </label>
 
             <button onclick="gerarWhatsApp()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold py-4 px-6 rounded-xl text-lg flex justify-center items-center transition-all shadow-lg shadow-emerald-500/30">
-                <i data-lucide="send" class="w-5 h-5 mr-2"></i>
-                Enviar Seleção via WhatsApp
+                <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i>
+                Finalizar Pedido via WhatsApp
             </button>
-            <p class="text-center text-xs text-gray-500 mt-3">Você não pagará nada agora. O pagamento será alinhado após a assinatura do termo.</p>
+            <p class="text-center text-xs text-gray-400 mt-3">Você será redirecionado para o nosso WhatsApp oficial para concluir a ativação.</p>
         </div>
 
     </div>
@@ -298,36 +361,70 @@
 
         // Elementos do DOM
         const checkboxes = document.querySelectorAll('.service-item');
-        const displayMensal = document.getElementById('total-mensal');
-        const displayUnico = document.getElementById('total-unico');
+        const displayMensal = document.getElementById('resumo-mensalidade');
+        const displaySetup = document.getElementById('resumo-setup');
+        const displayTotal = document.getElementById('resumo-total');
         const errorMsg = document.getElementById('error-msg');
         
         // Número do WhatsApp atualizado
         const NUMERO_WHATSAPP = "5533998192213"; 
+        // Taxa de setup fixa
+        const TAXA_SETUP = 100.00;
 
         // Função para formatar moeda (Reais - BRL)
         const formatCurrency = (value) => {
             return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         };
 
+        // Função para copiar chave PIX
+        const copiarPix = () => {
+            const input = document.getElementById('chave-pix');
+            const btn = document.getElementById('btn-copiar');
+            
+            // Seleciona e copia
+            input.select();
+            input.setSelectionRange(0, 99999); // Para mobile
+            navigator.clipboard.writeText(input.value).then(() => {
+                // Feedback visual temporário
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 mr-1"></i> Copiado!';
+                btn.classList.replace('bg-emerald-500', 'bg-emerald-700');
+                lucide.createIcons();
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.replace('bg-emerald-700', 'bg-emerald-500');
+                    lucide.createIcons();
+                }, 2000);
+            });
+        };
+
+        // Variáveis globais para armazenar os totais
+        let totalCalculado = 0;
+
         // Função para recalcular os totais em tempo real
         const recalcularTotais = () => {
             let totalMensal = 0;
-            let totalUnico = 0;
+            // O Setup Único passa a ser o valor base
+            let totalUnico = TAXA_SETUP;
 
             checkboxes.forEach(chk => {
                 if(chk.checked || chk.disabled) { 
                     const price = parseFloat(chk.getAttribute('data-price'));
                     if(chk.getAttribute('data-type') === 'mensal') {
                         totalMensal += price;
-                    } else {
+                    } else if (chk.getAttribute('data-type') === 'unico') {
                         totalUnico += price;
                     }
                 }
             });
+            
+            // O total a pagar hoje reflete a soma da mensalidade com a taxa única (Setup + Acelerador, caso selecionado)
+            totalCalculado = totalMensal + totalUnico;
 
             displayMensal.textContent = formatCurrency(totalMensal);
-            displayUnico.textContent = formatCurrency(totalUnico);
+            displaySetup.textContent = formatCurrency(totalUnico);
+            displayTotal.textContent = formatCurrency(totalCalculado);
         };
 
         // Adiciona evento de clique em todas as caixas de seleção
@@ -377,7 +474,8 @@
             mensagem += `Analisei os serviços na página e montei a minha estrutura ideal para começarmos:\n\n`;
 
             let totalMensal = 0;
-            let totalUnico = 0;
+            // Considerando o setup fixo
+            let totalUnico = TAXA_SETUP;
 
             // Corre os itens para montar a lista
             checkboxes.forEach(chk => {
@@ -390,7 +488,7 @@
                 if(chk.checked || chk.disabled) {
                     mensagem += `✅ ${nomeServico} (${tagPreco})\n`;
                     if(isMensal) totalMensal += price;
-                    else totalUnico += price;
+                    else if (chk.getAttribute('data-type') === 'unico') totalUnico += price;
                 } else {
                     mensagem += `❌ ${nomeServico}\n`;
                 }
@@ -401,10 +499,13 @@
             mensagem += `💰 Vencimento Mensal: *Todo dia ${diaVencimento}*\n`;
             mensagem += `✅ Termos de Uso: *Aceitos*\n`;
 
-            mensagem += `\n*Resumo do Investimento:*\n`;
+            mensagem += `\n*Resumo do Investimento Inicial:*\n`;
             mensagem += `- Mensalidade: *${formatCurrency(totalMensal)}*\n`;
-            mensagem += `- Taxa Única de Início: *${formatCurrency(totalUnico)}*\n\n`;
-            mensagem += `Gostaria de dar o próximo passo e receber a chave PIX para iniciarmos o projeto!`;
+            mensagem += `- Taxa de Implantação/Setup: *${formatCurrency(totalUnico)}*\n`;
+            mensagem += `- Total a Pagar Hoje: *${formatCurrency(totalCalculado)}*\n\n`;
+            
+            // Mensagem automática obrigando o envio do comprovante
+            mensagem += `Aqui está o meu pedido! O comprovante do PIX no valor de *${formatCurrency(totalCalculado)}* será enviado logo abaixo nesta conversa.`;
 
             // Codifica a mensagem e cria o Link final
             const textoCodificado = encodeURIComponent(mensagem);
@@ -439,7 +540,7 @@
             if (e.target === modal) fecharModal();
         });
 
-        // Roda a soma inicial
+        // Inicializa cálculos base
         recalcularTotais();
     </script>
 </body>
