@@ -37,6 +37,14 @@
         .admin-card { background: white; padding: 1.5rem; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #f1f5f9; }
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        
+        /* Switch Master */
+        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e2e8f0; transition: .4s; border-radius: 34px; border: 1px solid #cbd5e1;}
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);}
+        input:checked + .slider { background-color: #3B5B85; border-color: #3B5B85; }
+        input:checked + .slider:before { transform: translateX(20px); }
     </style>
     <script>
         if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
@@ -295,15 +303,35 @@
     <!-- PAINEL DE CONTROLE OCULTO (O COFRE) -->
     <div id="secret-admin-panel" class="hidden fixed inset-0 bg-slate-100 z-[99999] overflow-y-auto p-4 md:p-8">
         <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-center mb-8 bg-white p-4 rounded-2xl shadow-sm">
+            
+            <!-- HEADER DO PAINEL DE ADMINISTRAÇÃO -->
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 bg-white p-4 rounded-2xl shadow-sm gap-4">
                 <div class="flex items-center gap-3">
-                    <div class="bg-brand p-2 rounded-xl text-white"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg></div>
+                    <div class="bg-brand p-2 rounded-xl text-white">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
                     <div>
                         <h2 class="text-2xl font-black text-gray-800 leading-none">PetLojas Master Hub</h2>
                         <p class="text-xs text-brand font-bold uppercase tracking-widest mt-1">Acesso Autorizado</p>
                     </div>
                 </div>
-                <button onclick="document.getElementById('secret-admin-panel').classList.add('hidden')" class="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl font-bold text-sm transition-all">Fechar Painel</button>
+                
+                <!-- CONTROLOS DO PAINEL -->
+                <div class="flex items-center gap-3 flex-wrap justify-center">
+                    <div class="flex items-center gap-2 bg-slate-50 border px-3 py-1.5 rounded-xl">
+                        <span class="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Meus Dados</span>
+                        <label class="switch">
+                            <input type="checkbox" id="admin-filter-toggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <button id="btn-sync-manual" class="bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                        Sincronizar Agora
+                    </button>
+                    <button id="btn-logout" class="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl font-bold text-xs transition-all">Sair (Logout)</button>
+                    <button onclick="document.getElementById('secret-admin-panel').classList.add('hidden')" class="bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-xl font-bold text-xs transition-all">Minimizar</button>
+                </div>
             </div>
 
             <!-- KPIs -->
@@ -317,8 +345,8 @@
             <!-- Diretório Completo -->
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
-                    <h3 class="font-black text-gray-800 text-xs uppercase tracking-widest">Dossiês de Visitantes Sincronizados</h3>
-                    <span class="bg-green-500 text-white text-[10px] font-black px-2 py-1 rounded animate-pulse">LIVE</span>
+                    <h3 class="font-black text-gray-800 text-xs uppercase tracking-widest">Dossiês de Visitantes (Agrupados)</h3>
+                    <span id="sync-status" class="bg-green-500 text-white text-[10px] font-black px-2 py-1 rounded">ATUALIZADO</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500">
@@ -327,8 +355,8 @@
                                 <th class="px-6 py-4">Lead ID / Origem</th>
                                 <th class="px-6 py-4">Localização / Aparelho</th>
                                 <th class="px-6 py-4">Métricas Base</th>
-                                <th class="px-6 py-4">Comportamento (Seções & FAQ)</th>
-                                <th class="px-6 py-4">Último Acesso</th>
+                                <th class="px-6 py-4">Comportamento</th>
+                                <th class="px-6 py-4">Ação</th>
                             </tr>
                         </thead>
                         <tbody id="admin-table-body" class="divide-y divide-gray-100">
@@ -340,13 +368,30 @@
         </div>
     </div>
 
+    <!-- MODAL DO DOSSIÊ (Ficha Técnica Completa com as 17 métricas) -->
+    <div id="modal-dossie" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md hidden z-[100000] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300 flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <div>
+                    <h2 class="text-2xl font-black text-gray-800 tracking-tighter">Ficha Técnica do Lead</h2>
+                    <p id="modal-lead-id" class="text-[10px] font-bold text-brand uppercase mt-1 tracking-widest"></p>
+                </div>
+                <button id="btn-close-dossie" class="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-gray-600 transition shadow-sm active:scale-90"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto custom-scroll flex-1" id="modal-body">
+                <!-- Conteúdo 100% dinâmico gerado no JS com TODAS as métricas -->
+            </div>
+        </div>
+    </div>
+
     <!-- ESTRUTURA INVISÍVEL: MOTOR DE RASTREAMENTO FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, updateDoc, arrayUnion, collection, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, updateDoc, arrayUnion, collection, query, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAb07mX-XJ পরিকল্প07mX-XJYbC3gqwstrgbo1sM3QNVi8AE",
+            apiKey: "AIzaSyAb07mX-XJYbC3gqwstrgbo1sM3QNVi8AE",
             authDomain: "landing-page-83fd1.firebaseapp.com",
             projectId: "landing-page-83fd1",
             storageBucket: "landing-page-83fd1.firebasestorage.app",
@@ -358,33 +403,56 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- MODO MESTRE (CRIANDO A EXCEÇÃO DE RASTREAMENTO VIA URL) ---
-        // Se você acessar seusite.com/?gv=mestre o seu navegador será marcado para sempre
+        // VARIÁVEIS GLOBAIS DE ESTADO
+        let rawData = [];
+        let uniqueLeads = [];
+
+        // --- IDENTIDADE DO DISPOSITIVO E MODO MESTRE ---
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('gv') === 'mestre') {
             localStorage.setItem('ptl_admin_mode', 'true');
-            alert("🛡️ MODO MESTRE ATIVADO!\nEste dispositivo (PC/Celular) não enviará mais dados analíticos para os relatórios.");
+            alert("🛡️ MODO MESTRE ATIVADO!\nEste dispositivo não enviará dados ao Firebase.");
         }
-        
-        // Verifica se o navegador atual tem a marca do Mestre
         const isAdmin = localStorage.getItem('ptl_admin_mode') === 'true';
 
-        // --- SISTEMA DE GATILHO OCULTO (5 CLIQUES NO LOGO PARA ABRIR O PAINEL DE RELATÓRIO) ---
+        const getVisitorId = () => {
+            let id = localStorage.getItem('ptl_visitor_uuid');
+            if(!id) { id = 'PTL-' + Math.random().toString(36).substr(2, 9).toUpperCase(); localStorage.setItem('ptl_visitor_uuid', id); }
+            return id;
+        };
+        const visitorId = getVisitorId();
+
+        // --- SISTEMA DE GATILHO OCULTO (PERSISTÊNCIA DE LOGIN) ---
+        const secretTrigger = document.getElementById('logo-trigger');
         let clickCount = 0;
         let clickTimer;
-        const secretTrigger = document.getElementById('logo-trigger');
         
+        // Verifica se já está logado ao carregar a página (Evita F5 logout)
+        if (localStorage.getItem('ptl_admin_logged') === 'true') {
+            document.getElementById('secret-admin-panel').classList.remove('hidden');
+            loadAdminDataManual(); 
+        }
+
         secretTrigger.addEventListener('click', (e) => {
             e.preventDefault();
+            
+            // Se já estiver logado, 1 clique abre o painel direto
+            if (localStorage.getItem('ptl_admin_logged') === 'true') {
+                document.getElementById('secret-admin-panel').classList.remove('hidden');
+                loadAdminDataManual();
+                return;
+            }
+
+            // Se não estiver logado, exige 5 cliques
             clickCount++;
             clearTimeout(clickTimer);
-            
             if (clickCount === 5) {
                 clickCount = 0;
-                const email = prompt("ACESSO RESTRITO\n\nInsira o e-mail administrador para acessar o Data Hub:");
+                const email = prompt("ACESSO RESTRITO\n\nInsira o e-mail administrador:");
                 if (email === "gvconecta2025@gmail.com") {
+                    localStorage.setItem('ptl_admin_logged', 'true'); // Persistência ativada
                     document.getElementById('secret-admin-panel').classList.remove('hidden');
-                    loadAdminData(); // Carrega os dados do Firebase
+                    loadAdminDataManual();
                 } else if (email) {
                     alert("Acesso Negado.");
                 }
@@ -393,14 +461,20 @@
             }
         });
 
-        // --- MOTOR DE CAPTAÇÃO SILENCIOSA ---
+        // Botão de Logout (Sair)
+        document.getElementById('btn-logout').addEventListener('click', () => {
+            localStorage.removeItem('ptl_admin_logged'); // Remove persistência
+            document.getElementById('secret-admin-panel').classList.add('hidden');
+        });
+
+        // Botão de Sincronização Manual
+        document.getElementById('btn-sync-manual').addEventListener('click', loadAdminDataManual);
         
-        const getVisitorId = () => {
-            let id = localStorage.getItem('ptl_visitor_uuid');
-            if(!id) { id = 'PTL-' + Math.random().toString(36).substr(2, 9).toUpperCase(); localStorage.setItem('ptl_visitor_uuid', id); }
-            return id;
-        };
-        const visitorId = getVisitorId();
+        // Toggle do Filtro Mestre
+        document.getElementById('admin-filter-toggle').addEventListener('change', renderAdminUI);
+
+
+        // --- MOTOR DE CAPTAÇÃO SILENCIOSA ---
         const sessionId = 'S-' + Date.now();
         const sessionRef = doc(db, 'lp_acessos', sessionId);
         const startTime = Date.now();
@@ -409,7 +483,6 @@
         const utmMedium = urlParams.get('utm_medium') || 'N/A';
         const utmCampaign = urlParams.get('utm_campaign') || 'N/A';
         const referrer = document.referrer || 'Acesso Direto';
-
         const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
         const deviceType = isMobile ? 'Celular' : 'Desktop';
         const browserStr = navigator.userAgent.substring(0, 50);
@@ -421,10 +494,8 @@
         let faqClicks = 0;
 
         async function initSilentTracker() {
-            // Se for o Mestre, apenas carimba os links e abandona a captação
             if (isAdmin) {
                 stampLinks();
-                console.log("Modo Mestre detectado: Dados de sessão não serão enviados ao Firebase.");
                 return; 
             }
 
@@ -453,25 +524,19 @@
                 secoes_vistas: [],
                 eventos_detalhados: []
             });
-            
             stampLinks();
         }
 
-        // Carimba os links do WhatsApp com o ID do Lead (Funciona para todos)
         function stampLinks() {
             document.querySelectorAll('.track-wa').forEach(l => {
                 try {
                     let url = new URL(l.href);
                     let txt = url.searchParams.get('text') || '';
-                    if(!txt.includes('[Ref:')) {
-                        url.searchParams.set('text', txt + ` [Ref: ${visitorId}]`);
-                        l.href = url.toString();
-                    }
+                    if(!txt.includes('[Ref:')) { url.searchParams.set('text', txt + ` [Ref: ${visitorId}]`); l.href = url.toString(); }
                 } catch(e) {}
             });
         }
 
-        // Interações da Página (Só rastreia se não for o Mestre)
         window.addEventListener('scroll', () => {
             if (isAdmin) return;
             const pct = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
@@ -490,22 +555,18 @@
 
         document.addEventListener('click', (e) => {
             if (isAdmin) return;
-            
             let acao = '';
-            
             if(e.target.closest('.track-wa')) {
                 whatsappClicks++;
                 acao = 'CLIQUE: WhatsApp';
                 updateDoc(sessionRef, { cliques_whatsapp: whatsappClicks }).catch(()=>{});
             }
-            
             const faq = e.target.closest('.track-faq');
             if(faq && !faq.open) {
                 faqClicks++;
                 acao = 'FAQ: ' + faq.querySelector('summary').innerText.trim().substring(0, 40);
                 updateDoc(sessionRef, { cliques_faq: faqClicks }).catch(()=>{});
             }
-
             if(acao) {
                 updateDoc(sessionRef, { eventos_detalhados: arrayUnion({ acao, hora: new Date().toLocaleTimeString('pt-BR') }) }).catch(()=>{});
             }
@@ -514,91 +575,194 @@
         const saveHeartbeat = () => {
             if (isAdmin) return;
             const currentSeconds = Math.round((Date.now() - startTime)/1000);
-            updateDoc(sessionRef, {
-                tempo_segundos: currentSeconds,
-                scroll_max: maxScroll,
-                ultima_atualizacao: serverTimestamp()
-            }).catch(()=>{});
+            updateDoc(sessionRef, { tempo_segundos: currentSeconds, scroll_max: maxScroll, ultima_atualizacao: serverTimestamp() }).catch(()=>{});
         };
 
         window.addEventListener('visibilitychange', () => { if(document.visibilityState === 'hidden') saveHeartbeat(); });
         window.addEventListener('beforeunload', saveHeartbeat);
-
         initSilentTracker();
 
-        // --- LÓGICA DO PAINEL DE ADMINISTRAÇÃO (RENDERIZAÇÃO) ---
-        function loadAdminData() {
-            onSnapshot(query(collection(db, "lp_acessos")), (snap) => {
-                const raw = snap.docs.map(d => d.data());
+        // --- PAINEL DE ADMINISTRAÇÃO (AGRUPAMENTO E 17 MÉTRICAS) ---
+        
+        async function loadAdminDataManual() {
+            const badge = document.getElementById('sync-status');
+            badge.innerText = "BUSCANDO...";
+            badge.classList.remove('bg-green-500');
+            badge.classList.add('bg-amber-500', 'animate-pulse');
+
+            try {
+                // Fetch ÚNICO ao invés de onSnapshot (Economia de BD)
+                const snapshot = await getDocs(query(collection(db, "lp_acessos")));
+                rawData = snapshot.docs.map(d => d.data());
+                renderAdminUI();
                 
-                // Agrupar por Visitante (Lead Único)
-                const map = new Map();
-                raw.forEach(s => {
-                    const id = s.visitante_id;
-                    if (!map.has(id)) {
-                        map.set(id, {
-                            id,
-                            origem: s.utm_source,
-                            cidade: s.local.cidade,
-                            aparelho: s.dispositivo,
-                            tempo: s.tempo_segundos || 0,
-                            scroll: s.scroll_max || 0,
-                            wa: s.cliques_whatsapp || 0,
-                            faq: s.cliques_faq || 0,
-                            secoes: s.secoes_vistas || [],
-                            eventos: s.eventos_detalhados || [],
-                            visitas: 1,
-                            data: s.data_entrada
-                        });
-                    } else {
-                        const l = map.get(id);
-                        l.tempo += (s.tempo_segundos || 0);
-                        l.scroll = Math.max(l.scroll, s.scroll_max || 0);
-                        l.wa += (s.cliques_whatsapp || 0);
-                        l.faq += (s.cliques_faq || 0);
-                        l.eventos = [...l.eventos, ...(s.eventos_detalhados || [])];
-                        l.secoes = [...new Set([...l.secoes, ...(s.secoes_vistas || [])])];
-                        l.visitas++;
-                        if (s.data_entrada?.seconds > l.data?.seconds) l.data = s.data_entrada;
-                    }
-                });
-
-                const leads = Array.from(map.values()).sort((a,b) => (b.data?.seconds || 0) - (a.data?.seconds || 0));
-
-                // KPIs
-                document.getElementById('kpi-leads').innerText = leads.length;
-                document.getElementById('kpi-time').innerText = leads.length ? Math.round(leads.reduce((a,b)=>a+b.tempo,0)/leads.length) + 's' : '0s';
-                document.getElementById('kpi-scroll').innerText = leads.length ? Math.round(leads.reduce((a,b)=>a+b.scroll,0)/leads.length) + '%' : '0%';
-                const conv = leads.filter(l => l.wa > 0).length;
-                document.getElementById('kpi-conv').innerText = leads.length ? Math.round((conv/leads.length)*100) + '%' : '0%';
-
-                // Tabela
-                const tbody = document.getElementById('admin-table-body');
-                tbody.innerHTML = leads.map(l => `
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="px-6 py-4">
-                            <p class="font-black text-gray-800">${l.origem}</p>
-                            <p class="text-[9px] text-gray-400 font-mono mt-1">${l.id}</p>
-                        </td>
-                        <td class="px-6 py-4">
-                            <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600 font-bold">📍 ${l.cidade}</span>
-                            <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600 font-bold ml-1">📱 ${l.aparelho}</span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <p class="text-xs text-gray-500">⏱️ ${l.tempo}s</p>
-                            <p class="text-xs text-gray-500 mt-1">↕️ ${l.scroll}% lido</p>
-                        </td>
-                        <td class="px-6 py-4">
-                            <p class="text-xs text-gray-500">👀 ${l.secoes.length} seções</p>
-                            <p class="text-xs text-brand font-bold mt-1">💬 ${l.wa} CLIQUES WA</p>
-                        </td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-400">
-                            ${l.data ? new Date(l.data.seconds * 1000).toLocaleString('pt-BR') : 'Recente'}
-                        </td>
-                    </tr>
-                `).join('');
-            });
+                badge.innerText = "ATUALIZADO";
+                badge.classList.remove('bg-amber-500', 'animate-pulse');
+                badge.classList.add('bg-green-500');
+            } catch (error) {
+                console.error("Erro ao buscar:", error);
+                badge.innerText = "ERRO!";
+                badge.classList.replace('bg-amber-500', 'bg-red-500');
+            }
         }
+
+        function renderAdminUI() {
+            const showMaster = document.getElementById('admin-filter-toggle').checked;
+            
+            // 1. Filtro
+            const filtered = rawData.filter(s => showMaster ? true : s.visitante_id !== visitorId);
+
+            // 2. Agrupamento Total (As 17 métricas guardadas)
+            const map = new Map();
+            filtered.forEach(s => {
+                const id = s.visitante_id;
+                if (!map.has(id)) {
+                    map.set(id, {
+                        id,
+                        origem: s.utm_source,
+                        utm_medium: s.utm_medium,
+                        utm_campaign: s.utm_campaign,
+                        referrer: s.origem_url,
+                        navegador: s.navegador,
+                        resolucao: s.resolucao,
+                        cidade: s.local?.cidade,
+                        estado: s.local?.estado,
+                        pais: s.local?.pais,
+                        aparelho: s.dispositivo,
+                        tempo: s.tempo_segundos || 0,
+                        scroll: s.scroll_max || 0,
+                        wa: s.cliques_whatsapp || 0,
+                        faq: s.cliques_faq || 0,
+                        secoes: s.secoes_vistas || [],
+                        eventos: s.eventos_detalhados || [],
+                        visitas: 1,
+                        data: s.data_entrada
+                    });
+                } else {
+                    const l = map.get(id);
+                    l.tempo += (s.tempo_segundos || 0);
+                    l.scroll = Math.max(l.scroll, s.scroll_max || 0);
+                    l.wa += (s.cliques_whatsapp || 0);
+                    l.faq += (s.cliques_faq || 0);
+                    l.eventos = [...l.eventos, ...(s.eventos_detalhados || [])];
+                    l.secoes = [...new Set([...l.secoes, ...(s.secoes_vistas || [])])];
+                    l.visitas++;
+                    if (s.data_entrada?.seconds > l.data?.seconds) {
+                        l.data = s.data_entrada; // Pega info da visita mais recente
+                        l.navegador = s.navegador;
+                        l.resolucao = s.resolucao;
+                    }
+                }
+            });
+
+            uniqueLeads = Array.from(map.values()).sort((a,b) => (b.data?.seconds || 0) - (a.data?.seconds || 0));
+
+            // 3. Renderizar KPIs
+            document.getElementById('kpi-leads').innerText = uniqueLeads.length;
+            document.getElementById('kpi-time').innerText = uniqueLeads.length ? Math.round(uniqueLeads.reduce((a,b)=>a+b.tempo,0)/uniqueLeads.length) + 's' : '0s';
+            document.getElementById('kpi-scroll').innerText = uniqueLeads.length ? Math.round(uniqueLeads.reduce((a,b)=>a+b.scroll,0)/uniqueLeads.length) + '%' : '0%';
+            const conv = uniqueLeads.filter(l => l.wa > 0).length;
+            document.getElementById('kpi-conv').innerText = uniqueLeads.length ? Math.round((conv/uniqueLeads.length)*100) + '%' : '0%';
+
+            // 4. Renderizar Tabela
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = uniqueLeads.map(l => `
+                <tr class="hover:bg-slate-50 transition border-l-4 ${l.id === visitorId ? 'border-amber-400 bg-amber-50/20' : 'border-transparent'}">
+                    <td class="px-6 py-4">
+                        <p class="font-black text-gray-800">${l.id === visitorId ? '👑 VOCÊ' : l.origem}</p>
+                        <p class="text-[9px] text-gray-400 font-mono mt-1">${l.id}</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600 font-bold">📍 ${l.cidade}</span>
+                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600 font-bold ml-1">📱 ${l.aparelho}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="text-xs text-gray-500 font-bold">⏱️ ${l.tempo}s total</p>
+                        <p class="text-xs text-gray-500 mt-1">↕️ ${l.scroll}% lido</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <p class="text-xs text-gray-500">👀 ${l.secoes.length} seções vistas</p>
+                        <p class="text-xs text-brand font-bold mt-1">💬 ${l.wa} CLIQUES WA</p>
+                    </td>
+                    <td class="px-6 py-4">
+                        <button class="btn-open-modal bg-brand text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-brand-dark transition shadow-sm" data-id="${l.id}">
+                            Ficha Técnica
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // DELEGAÇÃO DE EVENTO PARA O BOTÃO DA FICHA TÉCNICA
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.btn-open-modal');
+            if (btn) {
+                const lead = uniqueLeads.find(x => x.id === btn.getAttribute('data-id'));
+                if (lead) openDossieCompleto(lead);
+            }
+        });
+
+        function openDossieCompleto(l) {
+            document.getElementById('modal-lead-id').innerText = "ID ÚNICO: " + l.id;
+            
+            document.getElementById('modal-body').innerHTML = `
+                <!-- LINHA 1: KPIS MESTRES -->
+                <div class="grid grid-cols-4 gap-4 mb-6">
+                    <div class="bg-blue-50 p-4 rounded-2xl text-center border border-blue-100"><p class="text-[9px] font-black text-brand uppercase">Tempo Total</p><p class="text-xl font-black text-gray-800">${l.tempo}s</p></div>
+                    <div class="bg-blue-50 p-4 rounded-2xl text-center border border-blue-100"><p class="text-[9px] font-black text-brand uppercase">Scroll Max</p><p class="text-xl font-black text-gray-800">${l.scroll}%</p></div>
+                    <div class="bg-orange-50 p-4 rounded-2xl text-center border border-orange-100"><p class="text-[9px] font-black text-orange-500 uppercase">Cliques WA</p><p class="text-xl font-black text-gray-800">${l.wa}</p></div>
+                    <div class="bg-gray-100 p-4 rounded-2xl text-center border border-gray-200"><p class="text-[9px] font-black text-gray-500 uppercase">Acessos</p><p class="text-xl font-black text-gray-800">${l.visitas}</p></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- DETALHES TÉCNICOS (NOVO) -->
+                    <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm">
+                        <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest border-b pb-2">Detalhes de Hardware & Local</h4>
+                        <ul class="text-xs space-y-2 text-gray-600">
+                            <li><strong>Dispositivo:</strong> ${l.aparelho}</li>
+                            <li><strong>Navegador:</strong> ${l.navegador}</li>
+                            <li><strong>Tela:</strong> ${l.resolucao}</li>
+                            <li><strong>Localização:</strong> ${l.cidade}, ${l.estado} - ${l.pais}</li>
+                            <li><strong>Data Recente:</strong> ${l.data ? new Date(l.data.seconds * 1000).toLocaleString('pt-BR') : 'N/A'}</li>
+                        </ul>
+                    </div>
+
+                    <!-- AQUISIÇÃO E UTMs (NOVO) -->
+                    <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm">
+                        <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest border-b pb-2">Fonte de Aquisição</h4>
+                        <ul class="text-xs space-y-2 text-gray-600 break-all">
+                            <li><strong>Link de Origem (Referrer):</strong> ${l.referrer}</li>
+                            <li><strong>UTM Source / Lead:</strong> <span class="bg-green-100 text-green-700 px-1 rounded font-bold">${l.origem}</span></li>
+                            <li><strong>UTM Medium:</strong> ${l.utm_medium}</li>
+                            <li><strong>UTM Campaign:</strong> ${l.utm_campaign}</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SEÇÕES VISTAS -->
+                <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest mt-6">Rastreio de Visão (Seções Lidas)</h4>
+                <div class="flex flex-wrap gap-2 mb-6">
+                    ${l.secoes.map(s => `<span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-[10px] font-bold border border-gray-200 uppercase">${s}</span>`).join('')}
+                </div>
+
+                <!-- HISTÓRICO DE CLIQUES -->
+                <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest">Histórico de Eventos & Objeções</h4>
+                <div class="space-y-2 mb-6 bg-slate-50 p-4 rounded-2xl border border-gray-100">
+                    ${l.eventos.length ? l.eventos.map(e => `
+                        <div class="flex justify-between items-center text-sm border-b border-gray-200 pb-2 last:border-0 last:pb-0">
+                            <span class="font-bold text-gray-700">${e.acao}</span>
+                            <span class="text-[9px] font-black text-gray-400 uppercase">${e.hora}</span>
+                        </div>
+                    `).join('') : '<p class="text-xs text-gray-400 italic">Sem cliques registrados.</p>'}
+                </div>
+                
+                <a href="https://wa.me/${l.origem.replace(/\D/g,'')}" target="_blank" class="block w-full bg-brand text-white py-4 rounded-2xl text-center font-black shadow-lg hover:scale-[1.01] transition-all uppercase tracking-widest text-sm">Chamar Lead no WhatsApp</a>
+            `;
+            document.getElementById('modal-dossie').classList.remove('hidden');
+        }
+
+        document.getElementById('btn-close-dossie').onclick = () => document.getElementById('modal-dossie').classList.add('hidden');
+
     </script>
 </body>
 </html>
