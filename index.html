@@ -325,12 +325,18 @@
                             <span class="slider"></span>
                         </label>
                     </div>
+                    <!-- BOTÃO DE EXCLUIR MEUS DADOS -->
+                    <button id="btn-excluir-meus-dados" class="hidden bg-red-50 text-red-600 border border-red-200 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        Apagar Meus Testes
+                    </button>
+                    <!-- BOTÃO DE SINCRONIZAÇÃO MANUAL -->
                     <button id="btn-sync-manual" class="bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-xl font-bold text-xs transition-all flex items-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
                         Sincronizar Agora
                     </button>
                     <button id="btn-logout" class="bg-red-50 text-red-500 hover:bg-red-500 hover:text-white px-4 py-2 rounded-xl font-bold text-xs transition-all">Sair (Logout)</button>
-                    <button onclick="document.getElementById('secret-admin-panel').classList.add('hidden')" class="bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-xl font-bold text-xs transition-all">Minimizar</button>
+                    <button id="btn-minimizar-painel" class="bg-gray-100 text-gray-600 hover:bg-gray-200 px-4 py-2 rounded-xl font-bold text-xs transition-all">Minimizar</button>
                 </div>
             </div>
 
@@ -346,7 +352,7 @@
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
                     <h3 class="font-black text-gray-800 text-xs uppercase tracking-widest">Dossiês de Visitantes (Agrupados)</h3>
-                    <span id="sync-status" class="bg-green-500 text-white text-[10px] font-black px-2 py-1 rounded">ATUALIZADO</span>
+                    <span id="sync-status" class="bg-green-500 text-white text-[10px] font-black px-2 py-1 rounded animate-pulse">AGUARDANDO SYNC...</span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500">
@@ -376,7 +382,10 @@
                     <h2 class="text-2xl font-black text-gray-800 tracking-tighter">Ficha Técnica do Lead</h2>
                     <p id="modal-lead-id" class="text-[10px] font-bold text-brand uppercase mt-1 tracking-widest"></p>
                 </div>
-                <button id="btn-close-dossie" class="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-gray-600 transition shadow-sm active:scale-90"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                <div class="flex gap-2">
+                     <button id="btn-excluir-lead-modal" class="p-3 bg-red-50 text-red-500 hover:bg-red-500 hover:text-white border border-red-100 rounded-2xl transition font-bold text-xs uppercase tracking-widest">Excluir</button>
+                     <button id="btn-close-dossie" class="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-gray-600 transition shadow-sm active:scale-90"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12"></path></svg></button>
+                </div>
             </div>
             
             <div class="p-6 overflow-y-auto custom-scroll flex-1" id="modal-body">
@@ -388,7 +397,7 @@
     <!-- ESTRUTURA INVISÍVEL: MOTOR DE RASTREAMENTO FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-        import { getFirestore, doc, setDoc, updateDoc, arrayUnion, collection, query, serverTimestamp, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, updateDoc, arrayUnion, collection, query, serverTimestamp, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAb07mX-XJYbC3gqwstrgbo1sM3QNVi8AE",
@@ -406,14 +415,15 @@
         // VARIÁVEIS GLOBAIS DE ESTADO
         let rawData = [];
         let uniqueLeads = [];
+        let currentLeadDocIds = []; // Usado para excluir um lead especifico
 
         // --- IDENTIDADE DO DISPOSITIVO E MODO MESTRE ---
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('gv') === 'mestre') {
-            localStorage.setItem('ptl_admin_mode', 'true');
-            alert("🛡️ MODO MESTRE ATIVADO!\nEste dispositivo não enviará dados ao Firebase.");
+        if (urlParams.get('admin') === 'true') {
+            document.getElementById('secret-admin-panel').classList.remove('hidden');
+            localStorage.setItem('ptl_admin_logged', 'true');
+            loadAdminDataManual();
         }
-        const isAdmin = localStorage.getItem('ptl_admin_mode') === 'true';
 
         const getVisitorId = () => {
             let id = localStorage.getItem('ptl_visitor_uuid');
@@ -421,6 +431,11 @@
             return id;
         };
         const visitorId = getVisitorId();
+
+        // Controla exibição do botão de apagar os próprios dados no painel
+        if (visitorId) {
+             document.getElementById('btn-excluir-meus-dados').classList.remove('hidden');
+        }
 
         // --- SISTEMA DE GATILHO OCULTO (PERSISTÊNCIA DE LOGIN) ---
         const secretTrigger = document.getElementById('logo-trigger');
@@ -461,11 +476,15 @@
             }
         });
 
-        // Botão de Logout (Sair)
+        // Botões Básicos do Painel
         document.getElementById('btn-logout').addEventListener('click', () => {
             localStorage.removeItem('ptl_admin_logged'); // Remove persistência
             document.getElementById('secret-admin-panel').classList.add('hidden');
         });
+        document.getElementById('btn-minimizar-painel').addEventListener('click', () => {
+            document.getElementById('secret-admin-panel').classList.add('hidden');
+        });
+
 
         // Botão de Sincronização Manual
         document.getElementById('btn-sync-manual').addEventListener('click', loadAdminDataManual);
@@ -473,6 +492,25 @@
         // Toggle do Filtro Mestre
         document.getElementById('admin-filter-toggle').addEventListener('change', renderAdminUI);
 
+        // Botão para excluir os PRÓPRIOS dados
+        document.getElementById('btn-excluir-meus-dados').addEventListener('click', async () => {
+            if(confirm(`Vou varrer o banco de dados e excluir TODOS os testes feitos pelo seu aparelho (ID: ${visitorId}).\nDeseja continuar?`)) {
+                try {
+                     const snapshot = await getDocs(query(collection(db, "lp_acessos")));
+                     let count = 0;
+                     for (const d of snapshot.docs) {
+                         if (d.data().visitante_id === visitorId) {
+                             await deleteDoc(doc(db, "lp_acessos", d.id));
+                             count++;
+                         }
+                     }
+                     alert(`Sucesso! ${count} registros de teste apagados.`);
+                     loadAdminDataManual(); // Recarrega a tabela limpa
+                } catch(e) {
+                     alert("Erro ao excluir dados.");
+                }
+            }
+        });
 
         // --- MOTOR DE CAPTAÇÃO SILENCIOSA ---
         const sessionId = 'S-' + Date.now();
@@ -494,11 +532,9 @@
         let faqClicks = 0;
 
         async function initSilentTracker() {
-            if (isAdmin) {
-                stampLinks();
-                return; 
-            }
-
+            // Verifica se é o admin e se o toggle está setado para não gravar
+            const isLogged = localStorage.getItem('ptl_admin_logged') === 'true';
+            
             try {
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
@@ -538,13 +574,11 @@
         }
 
         window.addEventListener('scroll', () => {
-            if (isAdmin) return;
             const pct = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
             if(pct > maxScroll && pct <= 100) maxScroll = pct;
         });
 
         const observer = new IntersectionObserver((entries) => {
-            if (isAdmin) return;
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     updateDoc(sessionRef, { secoes_vistas: arrayUnion(entry.target.id || 'N/A') }).catch(()=>{});
@@ -554,7 +588,6 @@
         document.querySelectorAll('.tracker-section').forEach(s => observer.observe(s));
 
         document.addEventListener('click', (e) => {
-            if (isAdmin) return;
             let acao = '';
             if(e.target.closest('.track-wa')) {
                 whatsappClicks++;
@@ -573,7 +606,6 @@
         });
 
         const saveHeartbeat = () => {
-            if (isAdmin) return;
             const currentSeconds = Math.round((Date.now() - startTime)/1000);
             updateDoc(sessionRef, { tempo_segundos: currentSeconds, scroll_max: maxScroll, ultima_atualizacao: serverTimestamp() }).catch(()=>{});
         };
@@ -593,15 +625,15 @@
             try {
                 // Fetch ÚNICO ao invés de onSnapshot (Economia de BD)
                 const snapshot = await getDocs(query(collection(db, "lp_acessos")));
-                rawData = snapshot.docs.map(d => d.data());
+                rawData = snapshot.docs.map(d => ({ docId: d.id, ...d.data() }));
                 renderAdminUI();
                 
-                badge.innerText = "ATUALIZADO";
+                badge.innerText = "ATUALIZADO AGORA";
                 badge.classList.remove('bg-amber-500', 'animate-pulse');
                 badge.classList.add('bg-green-500');
             } catch (error) {
                 console.error("Erro ao buscar:", error);
-                badge.innerText = "ERRO!";
+                badge.innerText = "ERRO AO CONECTAR";
                 badge.classList.replace('bg-amber-500', 'bg-red-500');
             }
         }
@@ -609,7 +641,7 @@
         function renderAdminUI() {
             const showMaster = document.getElementById('admin-filter-toggle').checked;
             
-            // 1. Filtro
+            // 1. Filtro (Esconder o ID atual se a chave estiver desligada)
             const filtered = rawData.filter(s => showMaster ? true : s.visitante_id !== visitorId);
 
             // 2. Agrupamento Total (As 17 métricas guardadas)
@@ -636,7 +668,8 @@
                         secoes: s.secoes_vistas || [],
                         eventos: s.eventos_detalhados || [],
                         visitas: 1,
-                        data: s.data_entrada
+                        data: s.data_entrada,
+                        documentos: [s.docId] // Guarda os IDs originais para exclusão
                     });
                 } else {
                     const l = map.get(id);
@@ -647,6 +680,7 @@
                     l.eventos = [...l.eventos, ...(s.eventos_detalhados || [])];
                     l.secoes = [...new Set([...l.secoes, ...(s.secoes_vistas || [])])];
                     l.visitas++;
+                    l.documentos.push(s.docId);
                     if (s.data_entrada?.seconds > l.data?.seconds) {
                         l.data = s.data_entrada; // Pega info da visita mais recente
                         l.navegador = s.navegador;
@@ -666,27 +700,33 @@
 
             // 4. Renderizar Tabela
             const tbody = document.getElementById('admin-table-body');
+            
+            if (uniqueLeads.length === 0) {
+                 tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-12 text-center text-gray-400 italic">Nenhum dado para exibir neste momento.</td></tr>`;
+                 return;
+            }
+
             tbody.innerHTML = uniqueLeads.map(l => `
                 <tr class="hover:bg-slate-50 transition border-l-4 ${l.id === visitorId ? 'border-amber-400 bg-amber-50/20' : 'border-transparent'}">
                     <td class="px-6 py-4">
-                        <p class="font-black text-gray-800">${l.id === visitorId ? '👑 VOCÊ' : l.origem}</p>
+                        <p class="font-black text-gray-800 uppercase">${l.id === visitorId ? '👑 MEUS TESTES' : l.origem}</p>
                         <p class="text-[9px] text-gray-400 font-mono mt-1">${l.id}</p>
                     </td>
                     <td class="px-6 py-4">
-                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600 font-bold">📍 ${l.cidade}</span>
-                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600 font-bold ml-1">📱 ${l.aparelho}</span>
+                        <span class="bg-gray-100 px-2 py-1 rounded text-[10px] uppercase tracking-widest text-gray-600 font-black">📍 ${l.cidade || 'Desconhecida'}</span>
+                        <span class="bg-gray-100 px-2 py-1 rounded text-[10px] uppercase tracking-widest text-gray-600 font-black ml-1">📱 ${l.aparelho}</span>
                     </td>
                     <td class="px-6 py-4">
                         <p class="text-xs text-gray-500 font-bold">⏱️ ${l.tempo}s total</p>
                         <p class="text-xs text-gray-500 mt-1">↕️ ${l.scroll}% lido</p>
                     </td>
                     <td class="px-6 py-4">
-                        <p class="text-xs text-gray-500">👀 ${l.secoes.length} seções vistas</p>
-                        <p class="text-xs text-brand font-bold mt-1">💬 ${l.wa} CLIQUES WA</p>
+                        <p class="text-[10px] text-gray-500 font-black uppercase tracking-wider">👀 ${l.secoes.length} seções lidas</p>
+                        <p class="text-[10px] text-brand font-black mt-1 uppercase tracking-wider">💬 ${l.wa} CLIQUES WA</p>
                     </td>
                     <td class="px-6 py-4">
-                        <button class="btn-open-modal bg-brand text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-brand-dark transition shadow-sm" data-id="${l.id}">
-                            Ficha Técnica
+                        <button class="btn-open-modal bg-brand text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase hover:bg-brand-dark transition shadow-sm active:scale-95" data-id="${l.id}">
+                            Ficha Completa
                         </button>
                     </td>
                 </tr>
@@ -705,36 +745,39 @@
         function openDossieCompleto(l) {
             document.getElementById('modal-lead-id').innerText = "ID ÚNICO: " + l.id;
             
+            // Guarda os documentos deste lead globalmente caso ele queira excluir
+            currentLeadDocIds = l.documentos; 
+
             document.getElementById('modal-body').innerHTML = `
                 <!-- LINHA 1: KPIS MESTRES -->
                 <div class="grid grid-cols-4 gap-4 mb-6">
-                    <div class="bg-blue-50 p-4 rounded-2xl text-center border border-blue-100"><p class="text-[9px] font-black text-brand uppercase">Tempo Total</p><p class="text-xl font-black text-gray-800">${l.tempo}s</p></div>
-                    <div class="bg-blue-50 p-4 rounded-2xl text-center border border-blue-100"><p class="text-[9px] font-black text-brand uppercase">Scroll Max</p><p class="text-xl font-black text-gray-800">${l.scroll}%</p></div>
-                    <div class="bg-orange-50 p-4 rounded-2xl text-center border border-orange-100"><p class="text-[9px] font-black text-orange-500 uppercase">Cliques WA</p><p class="text-xl font-black text-gray-800">${l.wa}</p></div>
-                    <div class="bg-gray-100 p-4 rounded-2xl text-center border border-gray-200"><p class="text-[9px] font-black text-gray-500 uppercase">Acessos</p><p class="text-xl font-black text-gray-800">${l.visitas}</p></div>
+                    <div class="bg-blue-50 p-4 rounded-2xl text-center border border-blue-100"><p class="text-[9px] font-black text-brand uppercase tracking-widest">Tempo Total</p><p class="text-xl font-black text-gray-800">${l.tempo}s</p></div>
+                    <div class="bg-blue-50 p-4 rounded-2xl text-center border border-blue-100"><p class="text-[9px] font-black text-brand uppercase tracking-widest">Scroll Max</p><p class="text-xl font-black text-gray-800">${l.scroll}%</p></div>
+                    <div class="bg-orange-50 p-4 rounded-2xl text-center border border-orange-100"><p class="text-[9px] font-black text-orange-500 uppercase tracking-widest">Cliques WA</p><p class="text-xl font-black text-gray-800">${l.wa}</p></div>
+                    <div class="bg-gray-100 p-4 rounded-2xl text-center border border-gray-200"><p class="text-[9px] font-black text-gray-500 uppercase tracking-widest">Acessos</p><p class="text-xl font-black text-gray-800">${l.visitas}</p></div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <!-- DETALHES TÉCNICOS (NOVO) -->
                     <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm">
                         <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest border-b pb-2">Detalhes de Hardware & Local</h4>
-                        <ul class="text-xs space-y-2 text-gray-600">
-                            <li><strong>Dispositivo:</strong> ${l.aparelho}</li>
-                            <li><strong>Navegador:</strong> ${l.navegador}</li>
-                            <li><strong>Tela:</strong> ${l.resolucao}</li>
-                            <li><strong>Localização:</strong> ${l.cidade}, ${l.estado} - ${l.pais}</li>
-                            <li><strong>Data Recente:</strong> ${l.data ? new Date(l.data.seconds * 1000).toLocaleString('pt-BR') : 'N/A'}</li>
+                        <ul class="text-[11px] space-y-2 text-gray-600">
+                            <li><strong class="uppercase tracking-wider">Dispositivo:</strong> ${l.aparelho}</li>
+                            <li><strong class="uppercase tracking-wider">Navegador:</strong> ${l.navegador || 'N/A'}</li>
+                            <li><strong class="uppercase tracking-wider">Tela:</strong> ${l.resolucao || 'N/A'}</li>
+                            <li><strong class="uppercase tracking-wider">Localização:</strong> ${l.cidade || 'N/A'}, ${l.estado || ''} - ${l.pais || ''}</li>
+                            <li><strong class="uppercase tracking-wider">Última Visita:</strong> ${l.data ? new Date(l.data.seconds * 1000).toLocaleString('pt-BR') : 'N/A'}</li>
                         </ul>
                     </div>
 
                     <!-- AQUISIÇÃO E UTMs (NOVO) -->
                     <div class="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm">
                         <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest border-b pb-2">Fonte de Aquisição</h4>
-                        <ul class="text-xs space-y-2 text-gray-600 break-all">
-                            <li><strong>Link de Origem (Referrer):</strong> ${l.referrer}</li>
-                            <li><strong>UTM Source / Lead:</strong> <span class="bg-green-100 text-green-700 px-1 rounded font-bold">${l.origem}</span></li>
-                            <li><strong>UTM Medium:</strong> ${l.utm_medium}</li>
-                            <li><strong>UTM Campaign:</strong> ${l.utm_campaign}</li>
+                        <ul class="text-[11px] space-y-2 text-gray-600 break-all">
+                            <li><strong class="uppercase tracking-wider">Referrer:</strong> ${l.referrer || 'N/A'}</li>
+                            <li><strong class="uppercase tracking-wider">Origem/Lead:</strong> <span class="bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-black">${l.origem}</span></li>
+                            <li><strong class="uppercase tracking-wider">UTM Medium:</strong> ${l.utm_medium || 'N/A'}</li>
+                            <li><strong class="uppercase tracking-wider">UTM Campaign:</strong> ${l.utm_campaign || 'N/A'}</li>
                         </ul>
                     </div>
                 </div>
@@ -742,24 +785,41 @@
                 <!-- SEÇÕES VISTAS -->
                 <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest mt-6">Rastreio de Visão (Seções Lidas)</h4>
                 <div class="flex flex-wrap gap-2 mb-6">
-                    ${l.secoes.map(s => `<span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-[10px] font-bold border border-gray-200 uppercase">${s}</span>`).join('')}
+                    ${l.secoes.length ? l.secoes.map(s => `<span class="bg-gray-100 text-gray-600 px-3 py-1.5 rounded-full text-[9px] font-black border border-gray-200 uppercase tracking-widest">${s}</span>`).join('') : '<span class="text-xs italic text-gray-400">Nenhum rastreio de seção gravado.</span>'}
                 </div>
 
                 <!-- HISTÓRICO DE CLIQUES -->
                 <h4 class="font-black text-gray-800 mb-3 uppercase text-[10px] tracking-widest">Histórico de Eventos & Objeções</h4>
                 <div class="space-y-2 mb-6 bg-slate-50 p-4 rounded-2xl border border-gray-100">
                     ${l.eventos.length ? l.eventos.map(e => `
-                        <div class="flex justify-between items-center text-sm border-b border-gray-200 pb-2 last:border-0 last:pb-0">
+                        <div class="flex justify-between items-center text-[11px] border-b border-gray-200 pb-2 last:border-0 last:pb-0">
                             <span class="font-bold text-gray-700">${e.acao}</span>
-                            <span class="text-[9px] font-black text-gray-400 uppercase">${e.hora}</span>
+                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-widest">${e.hora}</span>
                         </div>
-                    `).join('') : '<p class="text-xs text-gray-400 italic">Sem cliques registrados.</p>'}
+                    `).join('') : '<p class="text-[11px] text-gray-400 italic">Sem cliques registrados.</p>'}
                 </div>
                 
-                <a href="https://wa.me/${l.origem.replace(/\D/g,'')}" target="_blank" class="block w-full bg-brand text-white py-4 rounded-2xl text-center font-black shadow-lg hover:scale-[1.01] transition-all uppercase tracking-widest text-sm">Chamar Lead no WhatsApp</a>
+                <a href="https://wa.me/${l.origem.replace(/\D/g,'')}" target="_blank" class="block w-full bg-brand text-white py-5 rounded-[1.5rem] text-center font-black shadow-xl hover:scale-[1.01] transition-all uppercase tracking-[0.2em] text-sm">Chamar Lead no WhatsApp</a>
             `;
             document.getElementById('modal-dossie').classList.remove('hidden');
         }
+
+        // Lógica do botão de apagar Lead Específico dentro do Modal
+        document.getElementById('btn-excluir-lead-modal').addEventListener('click', async () => {
+             if (currentLeadDocIds.length > 0) {
+                 if (confirm("Você tem certeza que deseja excluir todo o histórico deste lead?")) {
+                     try {
+                         for (const docId of currentLeadDocIds) {
+                             await deleteDoc(doc(db, "lp_acessos", docId));
+                         }
+                         document.getElementById('modal-dossie').classList.add('hidden');
+                         loadAdminDataManual(); // Recarrega a tabela atualizada
+                     } catch(e) {
+                         alert("Erro ao excluir.");
+                     }
+                 }
+             }
+        });
 
         document.getElementById('btn-close-dossie').onclick = () => document.getElementById('modal-dossie').classList.add('hidden');
 
