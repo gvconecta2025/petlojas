@@ -340,13 +340,13 @@
         </div>
     </div>
 
-    <!-- ESTRUTURA INVISÍVEL: MOTOR DE RASTREAMENTO FIREBASE (17 MÉTRICAS) -->
+    <!-- ESTRUTURA INVISÍVEL: MOTOR DE RASTREAMENTO FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getFirestore, doc, setDoc, updateDoc, arrayUnion, collection, onSnapshot, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
-            apiKey: "AIzaSyAb07mX-XJYbC3gqwstrgbo1sM3QNVi8AE",
+            apiKey: "AIzaSyAb07mX-XJ পরিকল্প07mX-XJYbC3gqwstrgbo1sM3QNVi8AE",
             authDomain: "landing-page-83fd1.firebaseapp.com",
             projectId: "landing-page-83fd1",
             storageBucket: "landing-page-83fd1.firebasestorage.app",
@@ -358,7 +358,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- SISTEMA DE GATILHO OCULTO (5 CLIQUES NO LOGO) ---
+        // --- MODO MESTRE (CRIANDO A EXCEÇÃO DE RASTREAMENTO VIA URL) ---
+        // Se você acessar seusite.com/?gv=mestre o seu navegador será marcado para sempre
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('gv') === 'mestre') {
+            localStorage.setItem('ptl_admin_mode', 'true');
+            alert("🛡️ MODO MESTRE ATIVADO!\nEste dispositivo (PC/Celular) não enviará mais dados analíticos para os relatórios.");
+        }
+        
+        // Verifica se o navegador atual tem a marca do Mestre
+        const isAdmin = localStorage.getItem('ptl_admin_mode') === 'true';
+
+        // --- SISTEMA DE GATILHO OCULTO (5 CLIQUES NO LOGO PARA ABRIR O PAINEL DE RELATÓRIO) ---
         let clickCount = 0;
         let clickTimer;
         const secretTrigger = document.getElementById('logo-trigger');
@@ -382,9 +393,8 @@
             }
         });
 
-        // --- MOTOR DE CAPTAÇÃO SILENCIOSA (17 MÉTRICAS) ---
+        // --- MOTOR DE CAPTAÇÃO SILENCIOSA ---
         
-        // 1 & 2. IDs
         const getVisitorId = () => {
             let id = localStorage.getItem('ptl_visitor_uuid');
             if(!id) { id = 'PTL-' + Math.random().toString(36).substr(2, 9).toUpperCase(); localStorage.setItem('ptl_visitor_uuid', id); }
@@ -395,14 +405,11 @@
         const sessionRef = doc(db, 'lp_acessos', sessionId);
         const startTime = Date.now();
 
-        // 8 a 11. UTMs e Referrer
-        const urlParams = new URLSearchParams(window.location.search);
         const utmSource = urlParams.get('utm_source') || urlParams.get('lead') || 'Orgânico';
         const utmMedium = urlParams.get('utm_medium') || 'N/A';
         const utmCampaign = urlParams.get('utm_campaign') || 'N/A';
         const referrer = document.referrer || 'Acesso Direto';
 
-        // 4, 5 & 6. Hardware Info
         const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
         const deviceType = isMobile ? 'Celular' : 'Desktop';
         const browserStr = navigator.userAgent.substring(0, 50);
@@ -414,14 +421,19 @@
         let faqClicks = 0;
 
         async function initSilentTracker() {
-            // 9, 10 & 11. Localização via IP
+            // Se for o Mestre, apenas carimba os links e abandona a captação
+            if (isAdmin) {
+                stampLinks();
+                console.log("Modo Mestre detectado: Dados de sessão não serão enviados ao Firebase.");
+                return; 
+            }
+
             try {
                 const res = await fetch('https://ipapi.co/json/');
                 const data = await res.json();
                 geoData = { cidade: data.city, estado: data.region, pais: data.country_name };
             } catch(e) {}
 
-            // Criar Documento da Sessão
             await setDoc(sessionRef, {
                 visitante_id: visitorId,
                 sessao_id: sessionId,
@@ -445,7 +457,7 @@
             stampLinks();
         }
 
-        // Carimba os links do WhatsApp com o ID do Lead
+        // Carimba os links do WhatsApp com o ID do Lead (Funciona para todos)
         function stampLinks() {
             document.querySelectorAll('.track-wa').forEach(l => {
                 try {
@@ -459,14 +471,15 @@
             });
         }
 
-        // 12. Scroll Máximo
+        // Interações da Página (Só rastreia se não for o Mestre)
         window.addEventListener('scroll', () => {
+            if (isAdmin) return;
             const pct = Math.round((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100);
             if(pct > maxScroll && pct <= 100) maxScroll = pct;
         });
 
-        // 16. Seções Vistas
         const observer = new IntersectionObserver((entries) => {
+            if (isAdmin) return;
             entries.forEach(entry => {
                 if(entry.isIntersecting) {
                     updateDoc(sessionRef, { secoes_vistas: arrayUnion(entry.target.id || 'N/A') }).catch(()=>{});
@@ -475,18 +488,17 @@
         }, { threshold: 0.3 });
         document.querySelectorAll('.tracker-section').forEach(s => observer.observe(s));
 
-        // 14, 15 & 17. Eventos de Clique
         document.addEventListener('click', (e) => {
+            if (isAdmin) return;
+            
             let acao = '';
             
-            // Se clicou no WhatsApp
             if(e.target.closest('.track-wa')) {
                 whatsappClicks++;
                 acao = 'CLIQUE: WhatsApp';
                 updateDoc(sessionRef, { cliques_whatsapp: whatsappClicks }).catch(()=>{});
             }
             
-            // Se clicou no FAQ
             const faq = e.target.closest('.track-faq');
             if(faq && !faq.open) {
                 faqClicks++;
@@ -499,8 +511,8 @@
             }
         });
 
-        // 7, 12, 13. Heartbeat e Fechamento
         const saveHeartbeat = () => {
+            if (isAdmin) return;
             const currentSeconds = Math.round((Date.now() - startTime)/1000);
             updateDoc(sessionRef, {
                 tempo_segundos: currentSeconds,
